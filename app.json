@@ -1,33 +1,70 @@
 {
   "expo": {
-    "name": "a1-sports",
-    "slug": "a1-sports",
+    "name": "A1-Sports",
+    "slug": "a1-sports-app",
+    "privacy": "hidden",
     "version": "1.0.0",
+    "scheme": "a1sports",
+    "platforms": ["ios", "android"],
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#000",
+      "backgroundPosition": "center"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "enabled": false
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
+    "assetBundlePatterns": ["**/*"],
+    "notification": {
+      "color": "#F5AF19",
+      "icon": "./assets/images/notification-icon.png"
     },
     "android": {
+      "package": "com.a1sports.android",
+      "versionCode": 1,
+      "permissions": ["INTERNET"],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundImage": "./assets/images/notification-icon.png",
+        "backgroundColor": "#F5AF19"
+      },
+      "useNextNotificationsApi": true,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "http",
+              "host": "*.a1sports.com",
+              "pathPrefix": "/app"
+            },
+            {
+              "scheme": "https",
+              "host": "*.a1sports.com",
+              "pathPrefix": "/app"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.a1sports.ios",
+      "buildNumber": "1.0.0",
+      "supportsTablet": false,
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png"
     }
   }
 }
