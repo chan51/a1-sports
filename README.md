@@ -1,7 +1,7 @@
 # a1-sports
 
 Start project - npm start
-Build project Android - expo build:android
+Build project Android - eas build -p android
 Build project Ios - expo build:ios
 
 npm run build-android

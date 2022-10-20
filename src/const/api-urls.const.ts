@@ -1,9 +1,8 @@
 export const API_BASE = {
-  // baseHost: 'https://c4cook.com/stag',
-  // baseHost: 'https://c4cook.com/prod',
-  // basePort: '',
-  baseHost: 'http://192.168.1.10',
-  basePort: ':1410',
+  baseHost: 'https://sportyfy.io/a1sports',
+  basePort: '',
+  // baseHost: 'http://192.168.1.10',
+  // basePort: ':1410',
   get baseURL() {
     return this.baseHost + (this.basePort || '');
   },

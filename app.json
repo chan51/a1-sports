@@ -5,7 +5,10 @@
     "privacy": "hidden",
     "version": "1.0.0",
     "scheme": "a1sports",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -22,7 +25,9 @@
       "fallbackToCacheTimeout": 0,
       "enabled": false
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "notification": {
       "color": "#F5AF19",
       "icon": "./assets/images/notification-icon.png"
@@ -30,7 +35,9 @@
     "android": {
       "package": "com.a1sports.android",
       "versionCode": 1,
-      "permissions": ["INTERNET"],
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
         "backgroundImage": "./assets/images/notification-icon.png",
         "backgroundColor": "#F5AF19"
@@ -51,7 +58,10 @@
               "pathPrefix": "/app"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -60,11 +70,19 @@
       "buildNumber": "1.0.0",
       "supportsTablet": false,
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ae1e1d08-baf2-4b0a-80e6-24247fc1da5d"
+      }
     }
   }
 }

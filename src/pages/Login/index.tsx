@@ -54,7 +54,7 @@ const Login: React.FC = ({ navigation }: any) => {
       }
       isGuestUser();
       setApplicationVersion(Application.nativeApplicationVersion);
-    } catch { }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -144,7 +144,15 @@ const Login: React.FC = ({ navigation }: any) => {
           </Header>
           <Content>
             <FormContnet>
-              <View style={{ borderWidth: 1, borderColor: '#ddd', backgroundColor: '#f8f9f9', borderRadius: 50, overflow: 'hidden', }}>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#ddd',
+                  backgroundColor: '#f8f9f9',
+                  borderRadius: 50,
+                  overflow: 'hidden',
+                }}
+              >
                 <PhoneInput
                   ref={phoneInput}
                   defaultValue={value}
@@ -155,7 +163,6 @@ const Login: React.FC = ({ navigation }: any) => {
                   onChangeFormattedText={text => {
                     setFormattedValue(text);
                   }}
-
                   autoFocus
                 />
               </View>
