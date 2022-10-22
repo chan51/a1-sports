@@ -205,3 +205,12 @@ export const ProfileDetails = styled.View`
 export const ProfileDetailsData = styled.View`
 padding-left: 15px;
 `;
+
+export const ListItem = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})`
+  padding: 10px 15px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;

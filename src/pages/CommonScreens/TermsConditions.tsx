@@ -21,7 +21,7 @@ export const TermsConditions: React.FC = () => {
       </View>
       <Text>
         These Terms of Service (&ldquo;Terms&rdquo;, &ldquo;Terms of
-        Service&rdquo;) govern your use of our website located at www.c4cook.com
+        Service&rdquo;) govern your use of our website located at https://sportyfy.io/
         (together or individually &ldquo;Service&rdquo;) operated by echelon
         innovations.
       </Text>
@@ -47,7 +47,7 @@ export const TermsConditions: React.FC = () => {
       <Text>
         If you do not agree with (or cannot comply with) Agreements, then you
         may not use the Service, but please let us know by emailing at
-        c4cook1973@gmail.com so we can try to find a solution. These Terms apply
+        milan@sportyfy.io so we can try to find a solution. These Terms apply
         to all visitors, users and others who wish to access or use Service.
       </Text>
       <View>
@@ -61,7 +61,7 @@ export const TermsConditions: React.FC = () => {
         By using our Service, you agree to subscribe to newsletters, marketing
         or promotional materials and other information we may send. However, you
         may opt out of receiving any, or all, of these communications from us by
-        following the unsubscribe link or by emailing at c4cook1973@gmail.com.
+        following the unsubscribe link or by emailing at milan@sportyfy.io.
       </Text>
       <View>
         <Text>{'\n'}</Text>
@@ -370,7 +370,7 @@ export const TermsConditions: React.FC = () => {
         If you are a copyright owner, or authorized on behalf of one, and you
         believe that the copyrighted work has been copied in a way that
         constitutes copyright infringement, please submit your claim via email
-        to c4cook1973@gmail.com, with the subject line: &ldquo;Copyright
+        to milan@sportyfy.io, with the subject line: &ldquo;Copyright
         Infringement&rdquo; and include in your claim a detailed description of
         the alleged Infringement as detailed below, under &ldquo;DMCA Notice and
         Procedure for Copyright Infringement Claims&rdquo;
@@ -444,7 +444,7 @@ export const TermsConditions: React.FC = () => {
         <Text>{'\n'}</Text>
       </View>
       <Text>
-        You can contact our Copyright Agent via email at c4cook1973@gmail.com.
+        You can contact our Copyright Agent via email at milan@sportyfy.io.
       </Text>
       <View>
         <Text>{'\n'}</Text>
@@ -454,7 +454,7 @@ export const TermsConditions: React.FC = () => {
         <Text>{'\n'}</Text>
       </View>
       <Text>
-        You may provide us either directly at c4cook1973@gmail.com or via third
+        You may provide us either directly at milan@sportyfy.io or via third
         party sites and tools with information and feedback concerning errors,
         suggestions for improvements, ideas, problems, complaints, and other
         matters related to our Service (&ldquo;Feedback&rdquo;). You acknowledge
@@ -730,13 +730,13 @@ export const TermsConditions: React.FC = () => {
       </View>
       <Text>
         Please send your feedback, comments, requests for technical support by
-        email: c4cook1973@gmail.com.
+        email: milan@sportyfy.io.
       </Text>
       <View>
         <Text>{'\n'}</Text>
       </View>
       <Text>
-        These Terms of Service were created for www.c4cook.com by PolicyMaker.io
+        These Terms of Service were created for https://sportyfy.io/ by PolicyMaker.io
         on 2021-02-17.
       </Text>
     </View>

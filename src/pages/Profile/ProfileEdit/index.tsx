@@ -35,6 +35,7 @@ import {
   utilService,
   userDetails as userDetailsSubject,
 } from '../../../services/util.service';
+import * as NavigationService from '../../../services/navigation.service';
 import ProfilePicUpload from '../../../components/ProfilePicUpload';
 
 let typingTimer = null;
@@ -340,7 +341,7 @@ const ProfileEdit: React.FC = ({ navigation, route }: any) => {
         SecureStore.setItemAsync('user', JSON.stringify(result)).then(() => {
           setTimeout(() => {
             try {
-              navigation.navigate('Main', { gotoProfile: true });
+              NavigationService.reset('Main', 0, { gotoHome: true });
             } catch (err) {}
           }, 100);
         });

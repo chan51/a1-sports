@@ -18,7 +18,7 @@ const Sidebar: React.FC<any> = ({
   showHideSidebar,
   toggleSidebar,
   gotoEditScreen,
-  gotoRewardScreen,
+  gotoWalletScreen,
   gotoFeedbackScreen,
   gotoTNCScreen,
 }: any) => {
@@ -36,10 +36,10 @@ const Sidebar: React.FC<any> = ({
             Edit profile
           </Text>
         </MenuList>
-        <MenuList onPress={() => gotoRewardScreen()}>
+        <MenuList onPress={() => gotoWalletScreen()}>
           <FontAwesome name="money" size={20} color="black" />
           <Text style={{ fontSize: 14, color: '#000', textAlign: 'left' }}>
-            My Reward
+            My Wallet
           </Text>
         </MenuList>
 

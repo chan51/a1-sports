@@ -16,7 +16,7 @@ export const Disclaimer: React.FC = () => {
 
       <Text>
         The information provided by echelon innovations (&ldquo;Company&rdquo;,
-        &ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;) on www.c4cook.com
+        &ldquo;we&rdquo;, &ldquo;our&rdquo;, &ldquo;us&rdquo;) on https://sportyfy.io/
         (the &ldquo;Site&rdquo;) is for general informational purposes only. All
         information on the Site is provided in good faith, however we make no
         representation or warranty of any kind, express or implied, regarding
@@ -111,7 +111,7 @@ export const Disclaimer: React.FC = () => {
       </View>
 
       <Text>
-        All logos and trademarks of third parties referenced on www.c4cook.com
+        All logos and trademarks of third parties referenced on https://sportyfy.io/
         are the trademarks and logos of their respective owners. Any inclusion
         of such trademarks or logos does not imply or constitute any approval,
         endorsement or sponsorship of echelon innovations by such owners.
@@ -127,14 +127,14 @@ export const Disclaimer: React.FC = () => {
 
       <Text>
         Should you have any feedback, comments, requests for technical support
-        or other inquiries, please contact us by email: c4cook1973@gmail.com.
+        or other inquiries, please contact us by email: milan@sportyfy.io.
       </Text>
       <View>
         <Text>{'\n'}</Text>
       </View>
 
       <Text>
-        This Disclaimer was created for www.c4cook.com by PolicyMaker.io on
+        This Disclaimer was created for https://sportyfy.io/ by PolicyMaker.io on
         2021-02-17.
       </Text>
     </View>

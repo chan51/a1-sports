@@ -39,7 +39,7 @@ const NotificationBox: React.FC = ({ navigation }: any) => {
     skip: 0,
     limit: 10,
   });
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
 
@@ -60,7 +60,12 @@ const NotificationBox: React.FC = ({ navigation }: any) => {
 
   useEffect(() => {
     const { skip, limit } = page;
-    getNotification(skip, limit);
+    if (!skip || skip < totalNotifications) {
+      getNotification(skip, limit);
+    } else {
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
   }, [page]);
 
   const getNotification = (skip, limit) => {
@@ -114,6 +119,7 @@ const NotificationBox: React.FC = ({ navigation }: any) => {
 
   const _handleRefresh = () => {
     setRefreshing(true);
+    setNotifications([]);
     setTotalNotifications(0);
     setPage({
       skip: 0,
@@ -164,76 +170,75 @@ const NotificationBox: React.FC = ({ navigation }: any) => {
       </Header>
 
       <Content style={styles.scrollView}>
-        {notifications.length ? (
-          <FlatList
-            contentContainerStyle={styles.flatListContentContainerStyle}
-            onRefresh={_handleRefresh}
-            refreshing={refreshing}
-            data={notifications}
-            keyExtractor={notification => notification.id.toString()}
-            renderItem={({ item: notification }) => (
-              <Fragment key={`notification-${notification.id}`}>
-                <ListItem
-                  onPress={() => clickEventForNotification(notification)}
-                >
-                  <UserDetails>
-                    {notification.notificationSentByImage ? (
-                      <UserImage
-                        source={{ uri: notification.notificationSentByImage }}
-                      />
-                    ) : (
-                      <UserImage source={userIcon} />
-                    )}
-                    <UserText>
-                      <UserHeading>
-                        {notification.notificationSentByName}
-                      </UserHeading>
-                      <UserSubheading>
-                        {notification.notificationBody.body.replace(
-                          `${notification.notificationSentByName} `,
-                          '',
-                        )}
-                        <Text style={{ color: 'black' }}>
-                          {' '}
-                          {utilService.getAgoTimestamp(notification.createdAt)}
-                        </Text>
-                      </UserSubheading>
-                    </UserText>
-                  </UserDetails>
-                  {notification.requestData.thumb ? (
-                    <UploadedItem
-                      style={{ borderRadius: 5 }}
-                      source={{ uri: notification.requestData.thumb }}
-                    />
-                  ) : notification.actionPerformedOnType === 'user' &&
-                    notification.notificationSentByImage ? (
-                    <UploadedItem
-                      style={{ borderRadius: 5 }}
+        <FlatList
+          contentContainerStyle={styles.flatListContentContainerStyle}
+          onRefresh={_handleRefresh}
+          refreshing={refreshing}
+          data={notifications}
+          keyExtractor={notification => notification.id.toString()}
+          renderItem={({ item: notification }) => (
+            <Fragment key={`notification-${notification.id}`}>
+              <ListItem onPress={() => clickEventForNotification(notification)}>
+                <UserDetails>
+                  {notification.notificationSentByImage ? (
+                    <UserImage
                       source={{ uri: notification.notificationSentByImage }}
                     />
                   ) : (
-                    <UploadedItem source={userIcon} />
+                    <UserImage source={userIcon} />
                   )}
-                </ListItem>
-              </Fragment>
-            )}
-            onEndReached={_handleLoadMore}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={10}
-            ListFooterComponent={_renderFooter}
-          />
-        ) : (
-          <Image
-            source={require('../../assets/lottie-animations/notification.gif')}
-            style={{
-              width: 450,
-              height: 450,
-              position: 'absolute',
-              top: '5%',
-              left: '-7%',
-            }}
-          />
-        )}
+                  <UserText>
+                    <UserHeading>
+                      {notification.notificationSentByName}
+                    </UserHeading>
+                    <UserSubheading>
+                      {notification.notificationBody.body.replace(
+                        `${notification.notificationSentByName} `,
+                        '',
+                      )}
+                      <Text style={{ color: 'black' }}>
+                        {' '}
+                        {utilService.getAgoTimestamp(notification.createdAt)}
+                      </Text>
+                    </UserSubheading>
+                  </UserText>
+                </UserDetails>
+                {notification.requestData.thumb ? (
+                  <UploadedItem
+                    style={{ borderRadius: 5 }}
+                    source={{ uri: notification.requestData.thumb }}
+                  />
+                ) : notification.actionPerformedOnType === 'user' &&
+                  notification.notificationSentByImage ? (
+                  <UploadedItem
+                    style={{ borderRadius: 5 }}
+                    source={{ uri: notification.notificationSentByImage }}
+                  />
+                ) : (
+                  <UploadedItem source={userIcon} />
+                )}
+              </ListItem>
+            </Fragment>
+          )}
+          onEndReached={_handleLoadMore}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={10}
+          ListFooterComponent={_renderFooter}
+          ListEmptyComponent={() =>
+            !refreshing && !loadingMore ? (
+              <Image
+                source={require('../../assets/lottie-animations/notification.gif')}
+                style={{
+                  width: 400,
+                  height: 560,
+                  position: 'absolute',
+                }}
+              />
+            ) : (
+              <></>
+            )
+          }
+        />
       </Content>
     </SafeAreaView>
   );
@@ -253,6 +258,7 @@ const styles = StyleSheet.create({
   flatListContentContainerStyle: {
     flexDirection: 'column',
     width: '100%',
+    flexGrow: 1,
   },
 });
 

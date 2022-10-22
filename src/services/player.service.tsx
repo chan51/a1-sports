@@ -19,6 +19,11 @@ class PlayerService {
       data,
     });
   };
+
+  getPlayerLastInvestment = async (playerId, playerValue) => {
+    const url = `${API_URLS.Players.GetPlayerLastInvestment}?playerId=${playerId}&playerValue=${playerValue}`;
+    return await APIService({ url });
+  };
 }
 
 export default PlayerService;

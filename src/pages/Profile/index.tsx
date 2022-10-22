@@ -25,12 +25,14 @@ import {
   HeadingRight,
   ProfileDetails,
   ProfileDetailsData,
+  ListItem,
 } from './styles';
 
 import { User } from '../../models/user.interface';
 import ProfileContext from '../../context/ProfileContext';
 
 import UserService from '../../services/user.service';
+import { utilService, isOnProfile } from '../../services/util.service';
 
 import Sidebar from './Sidebar';
 import ProfilePicUpload from '../../components/ProfilePicUpload';
@@ -57,11 +59,8 @@ const Profile: React.FC = ({ navigation, route }: any) => {
   const [isMounted, setIsMounted] = useState(false);
   const [showHideSidebar, setShowHideSidebar] = useState(false);
   const [userId, setUserId] = useState<User | any>(userIdParam || null);
-  const [currentUser, setCurrentUser] = useState<User>();
 
-  const [events, setEvents] = useState([]);
-
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(true);
 
   useEffect(() => {
     if (isMounted) {
@@ -82,6 +81,17 @@ const Profile: React.FC = ({ navigation, route }: any) => {
       setShouldGoToEdit(false);
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (isMounted) {
+      isOnProfile.subscribe(status => {
+        if (status) {
+          _handleRefresh();
+          utilService.isOnProfileTab(false);
+        }
+      });
+    }
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -123,43 +133,14 @@ const Profile: React.FC = ({ navigation, route }: any) => {
   };
 
   const getUserDetails = userId => {
-    setRefreshing(false);
     if (!userId || !isMounted) return;
 
-    setRefreshing(true);
     const profileContextProfileDetails = profileContext.profiles[userId];
     if (profileContextProfileDetails) {
       setUser({ ...profileContextProfileDetails });
-      profileContextProfileDetails.events &&
-        setEvents(profileContextProfileDetails.events);
     }
 
-    SecureStore.getItemAsync('userCoins').then(userCoins => {
-      if (userCoins === null || userCoins === undefined) {
-        userService.getUserCoins(userId).then(({ status, userCoins }: any) => {
-          if (status) {
-            SecureStore.setItemAsync(
-              'userCoins',
-              JSON.stringify({
-                coins: (userCoins || {}).coins || 0,
-                likes: (userCoins || {}).likes || 0,
-              }),
-            );
-          }
-        });
-      }
-    });
-
-    getCurrentUser();
     getUserRecord(userId);
-    setRefreshing(false);
-  };
-
-  const getCurrentUser = async () => {
-    SecureStore.getItemAsync('user').then((currentUserValue: any) => {
-      currentUserValue = JSON.parse(currentUserValue);
-      setCurrentUser(currentUserValue);
-    });
   };
 
   const getUserRecord = userId => {
@@ -208,8 +189,8 @@ const Profile: React.FC = ({ navigation, route }: any) => {
     setShowHideSidebar(false);
   };
 
-  const gotoRewardScreen = () => {
-    navigation.push('Reward', { userId: userId });
+  const gotoWalletScreen = () => {
+    navigation.push('Wallet', { userId: userId });
     setShowHideSidebar(false);
   };
 
@@ -235,8 +216,32 @@ const Profile: React.FC = ({ navigation, route }: any) => {
   const [investments, setInvestments] = useState([]);
   const [totalInvestments, setTotalInvestments] = useState(0);
 
+  useEffect(() => {
+    const { skip, limit } = page;
+    if (!skip || skip < totalInvestments) {
+      getUserInvestments(skip, limit);
+    } else {
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
+  }, [page]);
+
+  const getUserInvestments = (skip, limit) => {
+    userService.getUserInvestments(skip, limit).then((response: any) => {
+      const newInvestments = [...investments, ...(response.investments || [])];
+      setInvestments(utilService.getUniqueArray(newInvestments, 'id', true));
+
+      setRefreshing(false);
+      setLoadingMore(false);
+      if (!totalInvestments) {
+        setTotalInvestments(response.investmentsLength);
+      }
+    });
+  };
+
   const _handleRefresh = () => {
     setRefreshing(true);
+    setInvestments([]);
     setTotalInvestments(0);
     setPage({
       skip: 0,
@@ -275,11 +280,12 @@ const Profile: React.FC = ({ navigation, route }: any) => {
     );
   };
 
-  const clickEventForLeader = ({ userId }) => {
+  const clickEventForLeader = player => {
     setButtonClicked(true);
     if (!buttonClicked) {
-      navigation.navigate('UserProfile', {
-        userId,
+      navigation.navigate('Investment', {
+        userId: player.id,
+        player,
       });
       setTimeout(() => setButtonClicked(false), 500);
     }
@@ -292,7 +298,7 @@ const Profile: React.FC = ({ navigation, route }: any) => {
         updateProfiles: () => null,
       }}
     >
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         {isMounted ? (
           <ContentMain
             style={showHideSidebar ? { left: -(winWidth / 1.8) } : null}
@@ -303,7 +309,7 @@ const Profile: React.FC = ({ navigation, route }: any) => {
               toggleSidebar={toggleSidebar}
               gotoEditScreen={gotoEditScreen}
               gotoTNCScreen={gotoTNCScreen}
-              gotoRewardScreen={gotoRewardScreen}
+              gotoWalletScreen={gotoWalletScreen}
               gotoFeedbackScreen={gotoFeedbackScreen}
             />
 
@@ -354,12 +360,10 @@ const Profile: React.FC = ({ navigation, route }: any) => {
             </ProfileDetails>
 
             <View style={styles.playerHeading}>
-              <Text style={styles.playerListHeadingText}>
-                {(user?.name || '').split(' ')[0]}’s{' '}
-              </Text>
-              <Text style={styles.playerValueHeadingText}>
-                Investment Return
-              </Text>
+              <Text style={styles.playerListHeadingText}>Player</Text>
+              <Text style={styles.playerListHeadingText}>IV</Text>
+              <Text style={styles.playerListHeadingText}>Value</Text>
+              <Text style={styles.playerListHeadingText}>Coins</Text>
             </View>
 
             <FlatList
@@ -369,43 +373,76 @@ const Profile: React.FC = ({ navigation, route }: any) => {
               data={investments}
               keyExtractor={investment => investment.id.toString()}
               renderItem={({ item: investment }) => (
-                <Fragment key={`leader-${investment.id}`}>
-                  <TouchableOpacity
-                    style={styles.touchableOpacity}
-                    onPress={() => clickEventForLeader(investment)}
+                <Fragment key={`investment-${investment.id}`}>
+                  <ListItem
+                    onPress={() =>
+                      investment.player
+                        ? clickEventForLeader(investment.player)
+                        : null
+                    }
                   >
                     <View style={styles.playerList}>
-                      <View style={styles.playerListTitel}>
-                        <Text style={{ fontSize: 13, fontWeight: '500' }}>
-                          {investment.name}
+                      <View
+                        style={{ ...styles.playerListValue, paddingLeft: 5 }}
+                      >
+                        <Text style={styles.playerListValueText}>
+                          {investment?.playerName}
                         </Text>
                       </View>
-                      <View style={styles.playerListValue}>
-                        <Text
-                          style={{
-                            marginRight: 8,
-                            fontSize: 13,
-                            fontWeight: '500',
-                          }}
-                        >
-                          {investment.coins}
+                      <View
+                        style={{ ...styles.playerListValue, paddingLeft: 12 }}
+                      >
+                        <Text style={styles.playerListValueText}>
+                          {investment.investment}
+                        </Text>
+                      </View>
+                      <View
+                        style={{ ...styles.playerListValue, paddingLeft: 20 }}
+                      >
+                        <Text style={styles.playerListValueText}>
+                          {investment.playerValue || 0}
+                        </Text>
+                        <Image source={coins} />
+                      </View>
+                      <View
+                        style={{
+                          ...styles.playerListValue,
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Text style={styles.playerListValueText}>
+                          {investment.totalInvestment}
                         </Text>
                         <Image source={coins} />
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </ListItem>
                 </Fragment>
               )}
               onEndReached={_handleLoadMore}
               onEndReachedThreshold={0.5}
               initialNumToRender={10}
               ListFooterComponent={_renderFooter}
+              ListEmptyComponent={() =>
+                !refreshing && !loadingMore ? (
+                  <Image
+                    source={require('../../assets/lottie-animations/investment.gif')}
+                    style={{
+                      width: '100%',
+                      height: 560,
+                      position: 'absolute',
+                    }}
+                  />
+                ) : (
+                  <></>
+                )
+              }
             />
           </ContentMain>
         ) : (
           <></>
         )}
-      </SafeAreaView>
+      </View>
     </ProfileContext.Provider>
   );
 };
@@ -432,45 +469,33 @@ const styles = StyleSheet.create({
   playerHeading: {
     paddingVertical: 15,
     backgroundColor: '#33291e',
-    paddingHorizontal: 5,
     flexDirection: 'row',
     marginTop: 15,
   },
   playerListHeadingText: {
     color: '#fff',
     fontSize: 14,
-    width: '60%',
-    paddingLeft: 10,
-    fontWeight: '500',
-  },
-  playerValueHeadingText: {
-    color: '#fff',
-    fontSize: 14,
+    width: '25%',
+    paddingLeft: 20,
     fontWeight: '500',
   },
   playerList: {
     flexDirection: 'row',
-    marginTop: 14,
-    paddingHorizontal: 5,
-  },
-  playerListTitel: {
-    width: '70%',
-    paddingLeft: 10,
-    flexDirection: 'row',
+    marginTop: 2,
   },
   playerListValue: {
-    paddingLeft: 10,
+    width: '25%',
     flexDirection: 'row',
+  },
+  playerListValueText: {
+    marginRight: 8,
+    fontSize: 13,
+    fontWeight: '500',
   },
   flatListContentContainerStyle: {
     flexDirection: 'column',
     width: '100%',
-  },
-  touchableOpacity: {
-    padding: '10px 15px',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexGrow: 1,
   },
 });
 

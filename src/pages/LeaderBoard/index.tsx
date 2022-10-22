@@ -9,9 +9,9 @@ import {
   ActivityIndicator,
   Text,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 
+import styled from 'styled-components/native';
 import { useFocusEffect } from '@react-navigation/core';
 
 import coins from './../../assets/icons/coins.png';
@@ -25,9 +25,9 @@ const leaderService = new LeaderService();
 const LeaderBoard: React.FC = ({ navigation }: any) => {
   const [page, setPage] = useState({
     skip: 0,
-    limit: 10,
+    limit: 15,
   });
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
 
@@ -48,7 +48,12 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
 
   useEffect(() => {
     const { skip, limit } = page;
-    getLeader(skip, limit);
+    if (!skip || skip < totalLeaders) {
+      getLeader(skip, limit);
+    } else {
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
   }, [page]);
 
   const getLeader = (skip, limit) => {
@@ -76,7 +81,6 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
 
   const _renderFooter = () => {
     if (!loadingMore) return null;
-
     return (
       <View
         style={{
@@ -97,18 +101,20 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
 
   const _handleRefresh = () => {
     setRefreshing(true);
+    setLeaders([]);
     setTotalLeaders(0);
     setPage({
       skip: 0,
-      limit: 10,
+      limit: 15,
     });
   };
 
-  const clickEventForLeader = ({ userId }) => {
+  const clickEventForLeader = player => {
     setButtonClicked(true);
     if (!buttonClicked) {
-      navigation.navigate('UserProfile', {
-        userId,
+      navigation.navigate('Investment', {
+        userId: player.id,
+        player,
       });
       setTimeout(() => setButtonClicked(false), 500);
     }
@@ -133,10 +139,7 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
           keyExtractor={leader => leader.id.toString()}
           renderItem={({ item: leader }) => (
             <Fragment key={`leader-${leader.id}`}>
-              <TouchableOpacity
-                style={styles.touchableOpacity}
-                onPress={() => clickEventForLeader(leader)}
-              >
+              <ListItem onPress={() => clickEventForLeader(leader)}>
                 <View style={styles.playerList}>
                   <View style={styles.playerListTitel}>
                     <Text style={{ fontSize: 13, fontWeight: '500' }}>
@@ -151,18 +154,32 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
                         fontWeight: '500',
                       }}
                     >
-                      {leader.coins}
+                      {leader.value}
                     </Text>
                     <Image source={coins} />
                   </View>
                 </View>
-              </TouchableOpacity>
+              </ListItem>
             </Fragment>
           )}
           onEndReached={_handleLoadMore}
           onEndReachedThreshold={0.5}
-          initialNumToRender={10}
+          initialNumToRender={20}
           ListFooterComponent={_renderFooter}
+          ListEmptyComponent={() =>
+            !refreshing && !loadingMore ? (
+              <Image
+                source={require('../../assets/lottie-animations/investment.gif')}
+                style={{
+                  width: '100%',
+                  height: 560,
+                  position: 'absolute',
+                }}
+              />
+            ) : (
+              <></>
+            )
+          }
         />
       </View>
     </SafeAreaView>
@@ -182,6 +199,8 @@ const styles = StyleSheet.create({
   flatListContentContainerStyle: {
     flexDirection: 'column',
     width: '100%',
+    flexGrow: 1,
+    minHeight: 600,
   },
   heading: {
     paddingVertical: 15,
@@ -201,8 +220,8 @@ const styles = StyleSheet.create({
   playerListHeadingText: {
     color: '#fff',
     fontSize: 14,
-    width: '70%',
-    paddingLeft: 10,
+    width: '61%',
+    paddingLeft: 15,
     fontWeight: '500',
   },
   playerValueHeadingText: {
@@ -216,20 +235,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   playerListTitel: {
-    width: '75%',
-    paddingLeft: 10,
+    width: '70%',
+    paddingLeft: 0,
     flexDirection: 'row',
   },
   playerListValue: {
-    paddingLeft: 10,
+    width: 50,
+    paddingLeft: 5,
     flexDirection: 'row',
-  },
-  touchableOpacity: {
-    padding: '10px 15px',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
+    alignContent: 'flex-end',
   },
 });
+export const ListItem = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})`
+  padding: 5px 15px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 export default LeaderBoard;

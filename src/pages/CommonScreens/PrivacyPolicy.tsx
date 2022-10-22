@@ -23,7 +23,7 @@ export const PrivacyPolicy: React.FC = () => {
         <Text>
           These Terms of Service (“Terms”, “Terms of Service”) govern your use
           of our website located at
-          <Text>www.c4cook.com</Text>
+          <Text>https://sportyfy.io/</Text>
           (together or individually “Service”) operated by Kreatv Media house
           private limited.
         </Text>
@@ -892,7 +892,7 @@ export const PrivacyPolicy: React.FC = () => {
           <Text>{'\n'}</Text>
         </View>
         <Text>
-          These Terms of Service were created for www.c4cook.com by
+          These Terms of Service were created for https://sportyfy.io/ by
           PolicyMaker.io on 2021-02-17.
         </Text>
         <View>
@@ -917,7 +917,7 @@ export const PrivacyPolicy: React.FC = () => {
         </View>
         <Text>
           The information provided by Kreatv Media house private limited
-          (“Company”, “we”, “our”, “us”) on www.c4cook.com (the “Site”) is for
+          (“Company”, “we”, “our”, “us”) on https://sportyfy.io/ (the “Site”) is for
           general informational purposes only. All information on the Site is
           provided in good faith, however we make no representation or warranty
           of any kind, express or implied, regarding the accuracy, adequacy,
@@ -1008,7 +1008,7 @@ export const PrivacyPolicy: React.FC = () => {
           <Text>{'\n'}</Text>
         </View>
         <Text>
-          All logos and trademarks of third parties referenced on www.c4cook.com
+          All logos and trademarks of third parties referenced on https://sportyfy.io/
           are the trademarks and logos of their respective owners. Any inclusion
           of such trademarks or logos does not imply or constitute any approval,
           endorsement or sponsorship of Kreatv Media house private limited by
@@ -1034,7 +1034,7 @@ export const PrivacyPolicy: React.FC = () => {
           <Text>{'\n'}</Text>
         </View>
         <Text>
-          This Disclaimer was created for www.c4cook.com by PolicyMaker.io on
+          This Disclaimer was created for https://sportyfy.io/ by PolicyMaker.io on
           2021-02-17.
         </Text>
         <View>
@@ -1066,13 +1066,13 @@ export const PrivacyPolicy: React.FC = () => {
       <View>
         <Text>
           Kreatv Media house private limited (“us”, “we”, or “our”) operates
-          www.c4cook.com (hereinafter referred to as “Service”).
+          https://sportyfy.io/ (hereinafter referred to as “Service”).
         </Text>
         <View>
           <Text>{'\n'}</Text>
         </View>
         <Text>
-          Our Privacy Policy governs your visit to www.c4cook.com, and explains
+          Our Privacy Policy governs your visit to https://sportyfy.io/, and explains
           how we collect, safeguard and disclose information that results from
           your use of our Service.
         </Text>
@@ -1111,7 +1111,7 @@ export const PrivacyPolicy: React.FC = () => {
           <Text>{'\n'}</Text>
         </View>
         <Text>
-          SERVICE means the www.c4cook.com website operated by kreatv media
+          SERVICE means the https://sportyfy.io/ website operated by kreatv media
           house private limited
         </Text>
         <View>

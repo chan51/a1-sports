@@ -14,6 +14,7 @@ import { API_BASE } from '../const/api-urls.const';
 
 const userDetails = new BehaviorSubject<User | any>({});
 const isOnHome = new BehaviorSubject<boolean | any>({});
+const isOnProfile = new Subject<boolean | any>();
 const updateHome = new Subject<boolean | any>();
 const openSidebar = new BehaviorSubject<boolean | any>(false);
 const updatedFeed = new BehaviorSubject<any>({});
@@ -31,6 +32,10 @@ const utilService = {
 
   isOnHomeTab: function (status: boolean) {
     isOnHome.next(status);
+  },
+
+  isOnProfileTab: function (status: boolean) {
+    isOnProfile.next(status);
   },
 
   setUserDetails: function (user: User) {
@@ -248,6 +253,7 @@ const utilService = {
 export {
   utilService,
   isOnHome,
+  isOnProfile,
   updateHome,
   userDetails,
   openSidebar,

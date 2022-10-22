@@ -207,7 +207,7 @@ const Home: React.FC = ({ navigation, route }: any) => {
     <Container>
       {isMounted && (
         <SafeAreaView style={styles.container}>
-          <View style={styles.playerIconlist}>
+          {/* <View style={styles.playerIconlist}>
             <View style={styles.playerIconlistItem}>
               <UserImage source={playerIcon} />
             </View>
@@ -225,10 +225,10 @@ const Home: React.FC = ({ navigation, route }: any) => {
             <View style={styles.playerIconlistItem}>
               <UserImage source={playerIcon} />
             </View>
-          </View>
+          </View> */}
 
           <View style={styles.playerHeading}>
-            <Text style={styles.playerListHeadingText}>Player List</Text>
+            <Text style={styles.playerListHeadingText}>Top Gainers</Text>
             <Text style={styles.playerValueHeadingText}>Value (Coins)</Text>
           </View>
           <ScrollView
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 5,
   },
   playerIconlistItem: {

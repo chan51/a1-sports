@@ -1,7 +1,7 @@
 export const API_BASE = {
   baseHost: 'https://sportyfy.io/a1sports',
   basePort: '',
-  // baseHost: 'http://192.168.1.10',
+  // baseHost: 'http://192.168.43.60',
   // basePort: ':1410',
   get baseURL() {
     return this.baseHost + (this.basePort || '');
@@ -27,11 +27,14 @@ export const API_URLS = {
     SubmitUserFeedback: API_BASE.APIv1 + 'submit-user-feedback',
     GetUserCoins: API_BASE.APIv1 + 'get-user-coins',
     SubmitInvestment: API_BASE.APIv1 + 'submit-investment',
+    GetUserInvestments: API_BASE.APIv1 + 'get-user-investments',
   },
 
   Players: {
     GetPlayers: API_BASE.APIv1 + 'get-players?searchKeyword=',
     CreateRecentSearch: API_BASE.APIv1 + 'create-recent-search',
+    GetLeaders: API_BASE.APIv1 + 'get-leaders',
+    GetPlayerLastInvestment: API_BASE.APIv1 + 'get-player-last-investment',
   },
 
   Chats: {},
@@ -59,9 +62,5 @@ export const API_URLS = {
     SaveDailyNotificationInteraction:
       API_BASE.APIv1 + 'save-daily-notification-interaction',
     GetNotifications: API_BASE.APIv1 + 'get-notifications',
-  },
-
-  Leaders: {
-    GetLeaders: API_BASE.APIv1 + 'get-leaders',
   },
 };

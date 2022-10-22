@@ -121,6 +121,11 @@ class UserService {
       data,
     });
   };
+
+  getUserInvestments = async (skip, limit) => {
+    const url = `${API_URLS.Users.GetUserInvestments}?skip=${skip}&limit=${limit}`;
+    return await APIService({ url });
+  };
 }
 
 export default UserService;

@@ -26,7 +26,7 @@ import UserService from '../../../services/user.service';
 
 const userService = new UserService();
 
-const Reward: React.FC = ({ navigation, route }: any) => {
+const Wallet: React.FC = ({ navigation, route }: any) => {
   let { userId } = route.params || {};
 
   const accordionList = [
@@ -106,19 +106,12 @@ const Reward: React.FC = ({ navigation, route }: any) => {
               </View>
 
               <HeadingMain>
-                <HeadingText>You have earned </HeadingText>
+                <HeadingText>You have </HeadingText>
                 <HeadingText style={{ color: '#F25813' }}>{coins}</HeadingText>
-                <HeadingText> coins</HeadingText>
+                <HeadingText> coins in your wallet.</HeadingText>
               </HeadingMain>
-              <View style={{ alignItems: 'center' }}>
-                <PrimaryButton disabled={true}>
-                  <PrimaryButtonText disabled={true}>
-                    Redeem Now
-                  </PrimaryButtonText>
-                </PrimaryButton>
-              </View>
 
-              <View style={{ marginTop: 30 }}>
+              {/* <View style={{ marginTop: 30 }}>
                 {accordionList.map(({ title, component }, index) => (
                   <AccordionListItem
                     key={index}
@@ -131,7 +124,7 @@ const Reward: React.FC = ({ navigation, route }: any) => {
                     }
                   ></AccordionListItem>
                 ))}
-              </View>
+              </View> */}
             </Content>
           </ScrollView>
         </ContentMain>
@@ -155,4 +148,4 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-export default Reward;
+export default Wallet;

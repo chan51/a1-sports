@@ -18,7 +18,7 @@ import LeaderBoard from '../pages/LeaderBoard';
 import Investment from '../pages/Investment';
 
 import Feedback from '../pages/Feedback';
-import Reward from '../pages/Profile/Reward';
+import Wallet from '../pages/Profile/Wallet';
 
 import Login from '../pages/Login';
 import OTP from '../pages/Login/OTP';
@@ -32,6 +32,7 @@ import {
 } from '../pages/CommonScreens';
 
 import UserService from '../services/user.service';
+import { utilService } from '../services/util.service';
 import * as NavigationService from '../services/navigation.service';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -73,7 +74,7 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
         }
       };
       const tabClicked = () => {
-        setTimeout(() => setIsTabClicked(false), 5000);
+        setTimeout(() => setIsTabClicked(false), 500);
       };
       userService.isUserLogin(loggedInCallback, params, tabClicked);
     }
@@ -135,6 +136,8 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
         name="Profile"
         component={Profile}
         listeners={{
+          focus: () => utilService.isOnProfileTab(true),
+          blur: () => utilService.isOnProfileTab(false),
           tabPress: $event => navigateToTab($event, 'Profile', { userId: '' }),
         }}
         initialParams={initialParams}
@@ -173,7 +176,7 @@ const userScreens = {
   ProfileOTP: { component: OTP, options: { headerShown: false } },
   LoginReset: { component: Login, options: { headerShown: false } },
   Feedback: { component: Feedback, options: { headerShown: false } },
-  Reward: { component: Reward, options: { headerShown: false } },
+  Wallet: { component: Wallet, options: { headerShown: false } },
   Investment: { component: Investment, options: { headerShown: false } },
 };
 

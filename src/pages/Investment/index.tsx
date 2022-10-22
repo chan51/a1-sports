@@ -17,7 +17,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { Player } from '../../models/player.interface';
 
-import viratKohli from './../../assets/player/virat-kohli.png';
+import avatar from './../../assets/player/avatar.png';
 import growth from './../../assets/icons/growth.png';
 import coins from './../../assets/icons/coins.png';
 import down from './../../assets/icons/down.png';
@@ -33,14 +33,19 @@ import {
 } from './styles';
 
 import UserService from '../../services/user.service';
+import PlayerService from '../../services/player.service';
+import { utilService } from '../../services/util.service';
 
 const userService = new UserService();
+const playerService = new PlayerService();
 
 const Investment: React.FC = ({ navigation, route }: any) => {
   const { player } = route.params || {};
 
   const [playerDetails, setPlayerDetails] = useState<Player>();
   const [currentUser, setCurrentUser] = useState<any>();
+  const [currentUserCoins, setCurrentUserCoins] = useState<any>(null);
+  const [playerLastInvestment, setPlayerLastInvestment] = useState<any>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const [investment, setInvestment] = useState(null);
@@ -74,26 +79,44 @@ const Investment: React.FC = ({ navigation, route }: any) => {
           setMaxInvestment(Math.floor(userRecord.coins / player.value));
         }
       });
+      playerService
+        .getPlayerLastInvestment(player.id, player.value)
+        .then((data: any) => {
+          if (isMounted && data.status) {
+            setPlayerLastInvestment(data.playerLastInvestment);
+          }
+        });
     });
   };
 
   const goBack = () => navigation.goBack();
 
   const onUpdateInvestment = (value: any) => {
+    let updatedInvestment = null;
     const parsedInvest = Number.parseInt(value);
     if (Number.isNaN(parsedInvest)) {
-      setInvestment(0);
+      updatedInvestment = 0;
     } else if (parsedInvest > maxInvestment) {
-      setInvestment(maxInvestment);
+      updatedInvestment = maxInvestment;
     } else {
-      setInvestment(parsedInvest);
+      updatedInvestment = parsedInvest;
     }
+
+    setInvestment(updatedInvestment);
+    setCurrentUserCoins(
+      currentUser?.coins - updatedInvestment * playerDetails.value,
+    );
   };
 
-  const submitInvestment = () => {
+  const buyInvestment = () => {
+    Keyboard.dismiss();
     const data = {
+      isBuy: true,
+      isSell: false,
       userId: currentUser.id,
       playerId: playerDetails.id,
+      playerName: playerDetails.name,
+      playerValue: playerDetails.value,
       investment,
       totalInvestment: investment * playerDetails.value,
     };
@@ -104,18 +127,55 @@ const Investment: React.FC = ({ navigation, route }: any) => {
       })
       .then(({ status, data }: any) => {
         if (status) {
-          const updatedUser = {
-            ...currentUser,
-            coins: data.coins,
-          };
-          SecureStore.setItemAsync('user', JSON.stringify(updatedUser));
-          setCurrentUser(updatedUser);
-          setInvestment(null);
-          setMaxInvestment(Math.floor(updatedUser.coins / player.value));
-          console.log(Math.floor(updatedUser.coins / player.value));
-          Keyboard.dismiss();
+          handleSubmitInvestment(data);
         }
+      })
+      .finally(() => {
+        utilService.showMessage(
+          `Successfully invested in player ${playerDetails?.name}!`,
+        );
+        goBack();
       });
+  };
+
+  const sellInvestment = () => {
+    Keyboard.dismiss();
+    const data = {
+      ...playerLastInvestment,
+      fromSell: true,
+      investment: playerLastInvestment.investment - investment,
+      totalInvestment:
+        playerLastInvestment.totalInvestment - investment * playerDetails.value,
+      isSell: investment === playerLastInvestment.investment,
+    };
+    userService
+      .submitInvestment({
+        ...data,
+        coins: currentUser?.coins + investment * playerDetails.value,
+      })
+      .then(({ status, data }: any) => {
+        if (status) {
+          handleSubmitInvestment(data);
+        }
+      })
+      .finally(() => {
+        utilService.showMessage(
+          `Successfully sold investment of player ${playerDetails?.name}!`,
+        );
+        goBack();
+      });
+  };
+
+  const handleSubmitInvestment = data => {
+    const updatedUser = {
+      ...currentUser,
+      coins: data.coins,
+    };
+    SecureStore.setItemAsync('user', JSON.stringify(updatedUser));
+    setCurrentUser(updatedUser);
+    setCurrentUserCoins(null);
+    setInvestment(null);
+    setMaxInvestment(Math.floor(updatedUser.coins / player.value));
   };
 
   return (
@@ -135,7 +195,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <ProfileDetails>
           <Banner style={{ backgroundColor: '#000' }}>
-            <CoverImage source={viratKohli} />
+            <CoverImage source={avatar} />
           </Banner>
           <ProfileDetailsData>
             <Text style={{ fontSize: 15, fontWeight: '500' }}>
@@ -148,7 +208,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
           <Text style={styles.playerListHeadingText}>Investment Details</Text>
         </View>
 
-        <View style={styles.playerList}>
+        {/* <View style={styles.playerList}>
           <View style={styles.playerListTitel}>
             <Text style={{ fontSize: 13, fontWeight: '400' }}>
               Growth( in %)
@@ -160,7 +220,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
             </Text>
             <Image source={growth} />
           </View>
-        </View>
+        </View> */}
         <View style={styles.playerList}>
           <View style={styles.playerListTitel}>
             <Text style={{ fontSize: 13, fontWeight: '400' }}>
@@ -180,7 +240,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
           </View>
           <View style={styles.playerListValue}>
             <Text style={{ marginRight: 8, fontSize: 13, fontWeight: '400' }}>
-              {currentUser?.coins}
+              {currentUserCoins || currentUser?.coins}
             </Text>
             <Image source={coins} />
           </View>
@@ -209,11 +269,15 @@ const Investment: React.FC = ({ navigation, route }: any) => {
               keyboardType="numeric"
               maxLength={(maxInvestment || '').length}
               autoComplete={'off'}
-              editable={!!maxInvestment}
-              selectTextOnFocus={!!maxInvestment}
+              editable={!!maxInvestment && !!playerDetails?.value}
+              selectTextOnFocus={!!maxInvestment && !!playerDetails?.value}
             />
             <TouchableOpacity
-              disabled={maxInvestment === investment || !maxInvestment}
+              disabled={
+                maxInvestment === investment ||
+                !maxInvestment ||
+                !playerDetails?.value
+              }
               style={{ marginLeft: 5 }}
               onPress={() => onUpdateInvestment(investment + 1)}
             >
@@ -221,7 +285,9 @@ const Investment: React.FC = ({ navigation, route }: any) => {
                 name="plus"
                 size={20}
                 color={
-                  maxInvestment === investment || !maxInvestment
+                  maxInvestment === investment ||
+                  !maxInvestment ||
+                  !playerDetails?.value
                     ? '#d5dbe5'
                     : 'black'
                 }
@@ -230,19 +296,49 @@ const Investment: React.FC = ({ navigation, route }: any) => {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => submitInvestment()}
-        >
-          <View
-            style={{
-              ...styles.button,
-              backgroundColor: investment ? '#fae04b' : '#d5dbe5',
-            }}
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => buyInvestment()}
           >
-            <Text style={{ fontSize: 15, fontWeight: '500' }}>Submit</Text>
-          </View>
-        </TouchableOpacity>
+            <View
+              style={{
+                ...styles.button,
+                backgroundColor: investment ? '#fae04b' : '#d5dbe5',
+              }}
+            >
+              <Text style={{ fontSize: 15, fontWeight: '500' }}>Buy</Text>
+            </View>
+          </TouchableOpacity>
+          {playerLastInvestment ? (
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() =>
+                investment &&
+                investment * playerDetails.value <=
+                  playerLastInvestment.totalInvestment
+                  ? sellInvestment()
+                  : null
+              }
+            >
+              <View
+                style={{
+                  ...styles.button,
+                  backgroundColor:
+                    investment &&
+                    investment * playerDetails.value <=
+                      playerLastInvestment.totalInvestment
+                      ? '#fae04b'
+                      : '#d5dbe5',
+                }}
+              >
+                <Text style={{ fontSize: 15, fontWeight: '500' }}>Sell</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <></>
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

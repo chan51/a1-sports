@@ -12,20 +12,23 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 
 const data = [
   {
-    title: 'C4cook',
-    text: 'Analyse player`s performance and\n\n invest on top performers',
+    index: 0,
+    title: 'A1Sports',
+    text: 'Sports ka share market',
     image: require('../../assets/images/slider1.png'),
     bg: '#ffffff',
   },
   {
-    title: 'Title 2',
-    text: 'Select your sports fantasy players\n\n and earn big REWARDS.',
+    index: 1,
+    title: 'A1Sports',
+    text: 'Invest into your favorite sports\n\n person to earn BIG rewards',
     image: require('../../assets/images/slider2.png'),
     bg: '#ffffff',
   },
   {
+    index: 2,
     title: '',
-    text: 'Analyse Invest Earn\n\n Are you ready for new gaming\n\n and earning experience?',
+    text: 'Analyse player`s performance and\n\n invest on top performers',
     image: require('../../assets/images/slider3.png'),
     bg: '#ffffff',
   },
@@ -143,7 +146,7 @@ const IntroSlider: React.FC<Props> = ({ isSliderDone, handleSlider }) => {
     );
   };
 
-  const _keyExtractor = (item: Item) => item.title;
+  const _keyExtractor = (item: Item) => item.index.toString();
 
   const _renderPagination = (activeIndex: number) => {
     return (

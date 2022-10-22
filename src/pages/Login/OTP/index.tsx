@@ -118,9 +118,6 @@ const OTP: React.FC = ({ navigation, route }: any) => {
           setTimeout(() => {
             try {
               resetData();
-              /* if (initialRoute) {
-                updateUserProfile(data, false);
-              } else */
               if (result?.name) {
                 userDetails.next(result);
                 NavigationService.reset('Main', 0, { gotoHome: true });
