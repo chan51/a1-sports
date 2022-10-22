@@ -22,7 +22,7 @@ export function goBack() {
   }
 }
 
-export function reset(routeName = 'Login', index = 0, params?) {
+export function reset(routeName = 'LoginReset', index = 0, params?) {
   if (config.navigator) {
     let action = CommonActions.reset({
       index,

@@ -135,7 +135,11 @@ const utilService = {
         alert('Failed to get push token for push notification!');
         return;
       }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
+      token = (
+        await Notifications.getExpoPushTokenAsync({
+          experienceId: '@chan51/a1-sports-app',
+        })
+      ).data;
     } else {
       alert('Must use physical device for Push Notifications');
     }

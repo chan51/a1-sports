@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "407541199427",
+    "project_id": "a1sports",
+    "storage_bucket": "a1sports.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407541199427:android:a981f7a4c4bafb89e95af6",
+        "android_client_info": {
+          "package_name": "com.a1sports.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407541199427-f3fleiuvdg4etnplfmm86031coufgifj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApxUCWovyAdiO5CgbuFfgcTxD8Gp2JjVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407541199427-f3fleiuvdg4etnplfmm86031coufgifj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

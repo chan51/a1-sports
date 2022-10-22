@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, AppState, LogBox } from 'react-native';
 
@@ -55,7 +56,7 @@ const App: React.FC = () => {
           const { date, request } = notification;
           if (request && request.content) {
             const { data } = request.content;
-            if (data.saveInteraction) {
+            /* if (data.saveInteraction) {
               navigateToLink('Home');
             } else if (data.page && data.action) {
               switch (data.action) {
@@ -77,7 +78,7 @@ const App: React.FC = () => {
                   });
                   break;
               }
-            }
+            } */
           }
         },
       );
@@ -95,38 +96,12 @@ const App: React.FC = () => {
       await Notifications.cancelAllScheduledNotificationsAsync();
     }
     cancelAllScheduledNotificationsAsync();
-
-    triggerDailyNotification({
-      title: 'Good Morning',
-      body: 'Start your day with a healthy breakfast.',
-      hour: 7,
-      minute: 30,
-    });
-    triggerDailyNotification({
-      title: 'Its Lunch Time',
-      body: 'Explore cuisines and try at home.',
-      hour: 12,
-      minute: 30,
-    });
-    triggerDailyNotification({
-      title: 'Snack Time',
-      body: 'Take a break... Working too long is stressful.',
-      hour: 17,
-      minute: 30,
-    });
-    triggerDailyNotification({
-      title: 'Keep it lite',
-      body: 'Explore new healthy recipes and keep yourself healthy.',
-      hour: 20,
-      minute: 30,
-    });
   }, []);
 
   useEffect(() => {
     isOnHome.next(false);
     isUserAvailable();
     LogBox.ignoreAllLogs(true);
-    SecureStore.deleteItemAsync('upload');
     setTimeout(() => initialization(), 100);
 
     networkState && networkState();
@@ -134,24 +109,12 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    AppState.addEventListener('change', _handleAppStateChange);
-    return () => AppState.removeEventListener('change', _handleAppStateChange);
+    const appStateChange = AppState.addEventListener(
+      'change',
+      _handleAppStateChange,
+    );
+    return () => appStateChange.remove();
   }, []);
-
-  const triggerDailyNotification = async notifi => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: notifi.title,
-        body: notifi.body,
-        data: { saveInteraction: true, title: notifi.title },
-      },
-      trigger: {
-        hour: notifi.hour,
-        minute: notifi.minute,
-        repeats: true,
-      },
-    });
-  };
 
   const navigateToLink = (path, queryParams = {}) => {
     if (appCurrentState !== 'active') {
@@ -178,7 +141,11 @@ const App: React.FC = () => {
   const updateUserSpecificAppDetails = async status => {
     let user: User | any = await SecureStore.getItemAsync('user');
     const userId: string = await SecureStore.getItemAsync('userId');
-    const expoPushToken = (await Notifications.getExpoPushTokenAsync()).data;
+    const expoPushToken = (
+      await Notifications.getExpoPushTokenAsync({
+        experienceId: '@chan51/a1-sports-app',
+      })
+    ).data;
 
     if (userId) {
       const appStateData = { userId, status };

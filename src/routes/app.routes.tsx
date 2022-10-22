@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar, Platform, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, Platform } from 'react-native';
 
 import {
   Ionicons,
@@ -32,7 +32,6 @@ import {
 } from '../pages/CommonScreens';
 
 import UserService from '../services/user.service';
-import { isOnHome, updateHome } from '../services/util.service';
 import * as NavigationService from '../services/navigation.service';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -44,26 +43,13 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
   initialRoute = initialRoute || 'Home';
 
   const [isMounted, setIsMounted] = React.useState(false);
-  const [refreshFeeds, setRefreshFeeds] = useState(false);
   const [isTabClicked, setIsTabClicked] = React.useState(false);
-  const [home, setHome] = useState(initialRoute === 'Home');
 
   useEffect(() => {
     setTimeout(() => setIsMounted(true), 1000);
-    setTimeout(() => {
-      isOnHome &&
-        isMounted &&
-        isOnHome.subscribe(({ type, data }) => {
-          type === 'refreshFeeds' && isMounted && setRefreshFeeds(!!data);
-        });
-    }, 1200);
   }, []);
 
   NavigationService.setNavigator(navigation);
-
-  const setHomeStatus = (status: boolean) => {
-    setHome(status);
-  };
 
   StatusBar.setBarStyle('dark-content');
   if (Platform.OS === 'android') StatusBar.setBackgroundColor('#fff');
@@ -95,7 +81,6 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
 
   return (
     <Tab.Navigator
-      shifting={false}
       barStyle={{
         backgroundColor: '#fff',
         justifyContent: 'center',
@@ -108,10 +93,7 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
         name="Home"
         component={Home}
         listeners={{
-          focus: () => setHomeStatus(true),
-          blur: () => setHomeStatus(false),
-          tabPress: $event =>
-            updateHome.next({ type: 'refreshPage', data: true }),
+          tabPress: $event => navigateToTab($event, 'Home'),
         }}
         initialParams={initialParams}
         options={{
@@ -119,18 +101,6 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
           tabBarIcon: ({ color }) => (
             <>
               <Ionicons name="home" size={23} color={color} />
-              {refreshFeeds ? (
-                <Text
-                  style={{
-                    width: 5,
-                    height: 5,
-                    backgroundColor: '#F25813',
-                    borderRadius: 10,
-                  }}
-                ></Text>
-              ) : (
-                <></>
-              )}
             </>
           ),
         }}
@@ -198,7 +168,6 @@ const authScreens = {
 
 const userScreens = {
   Main: { component: AppRoutes, options: { headerShown: false } },
-  // Record: { component: Record, options: { headerShown: false } },
   UserProfile: { component: Profile, options: { headerShown: false } },
   ProfileEdit: { component: ProfileEdit, options: { headerShown: false } },
   ProfileOTP: { component: OTP, options: { headerShown: false } },

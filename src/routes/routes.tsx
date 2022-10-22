@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 
 import * as SecureStore from 'expo-secure-store';
+import { NavigationContainer } from '@react-navigation/native';
 
 import IntroSlider from './intro-slider';
 import RootStackScreen from './app.routes';
-import AuthService from '../services/auth.service';
-import * as NavigationService from '../services/navigation.service';
-
-const authService = new AuthService();
 
 const Routes: React.FC<any> = ({ userId }: any) => {
   let [loading, setLoading] = useState(false);
@@ -36,7 +32,6 @@ const Routes: React.FC<any> = ({ userId }: any) => {
   const handleSliderAction = () => {
     setIsSliderDone(true);
     SecureStore.setItemAsync('isSliderDone', 'true');
-    // authService.guestLogin(() => NavigationService.navigate('Main'));1
   };
 
   return (
