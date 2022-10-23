@@ -182,7 +182,7 @@ const Players: React.FC = ({ navigation }: any) => {
         <Text style={{ ...styles.playerListHeadingText, marginLeft: 10 }}>
           Player Name
         </Text>
-        <Text style={{ ...styles.playerListHeadingText, marginLeft: -8 }}>
+        <Text style={{ ...styles.playerListHeadingText, marginLeft: -16 }}>
           Country
         </Text>
         <Text
@@ -230,7 +230,7 @@ const Players: React.FC = ({ navigation }: any) => {
                         style={{
                           ...styles.playerListValue,
                           justifyContent: 'flex-end',
-                          width: '16%',
+                          width: '20%',
                         }}
                       >
                         <Text style={styles.playerListValueText}>
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   playerListValue: {
-    width: '42%',
+    width: '40%',
     flexDirection: 'row',
     paddingHorizontal: 10,
   },

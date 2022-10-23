@@ -30,12 +30,12 @@ const Sidebar: React.FC<any> = ({
             {user?.name}
           </Text>
         </MenuHeader>
-        <MenuList onPress={() => gotoEditScreen()}>
+        {/* <MenuList onPress={() => gotoEditScreen()}>
           <Feather name="edit-3" size={20} color="#000" />
           <Text style={{ fontSize: 14, color: '#000', textAlign: 'left' }}>
             Edit profile
           </Text>
-        </MenuList>
+        </MenuList> */}
         <MenuList onPress={() => gotoWalletScreen()}>
           <FontAwesome name="money" size={20} color="black" />
           <Text style={{ fontSize: 14, color: '#000', textAlign: 'left' }}>
