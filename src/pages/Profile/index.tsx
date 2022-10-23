@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  SafeAreaView,
   Image,
   FlatList,
   ActivityIndicator,
@@ -361,10 +360,26 @@ const Profile: React.FC = ({ navigation, route }: any) => {
 
             {(investments || []).length ? (
               <View style={styles.playerHeading}>
-                <Text style={styles.playerListHeadingText}>Player</Text>
-                <Text style={styles.playerListHeadingText}>IV</Text>
-                <Text style={styles.playerListHeadingText}>Value</Text>
-                <Text style={styles.playerListHeadingText}>Coins</Text>
+                <Text
+                  style={{ ...styles.playerListHeadingText, marginLeft: -10 }}
+                >
+                  Player
+                </Text>
+                <Text
+                  style={{ ...styles.playerListHeadingText, marginLeft: 2 }}
+                >
+                  Share
+                </Text>
+                <Text
+                  style={{ ...styles.playerListHeadingText, marginLeft: 4 }}
+                >
+                  Value
+                </Text>
+                <Text
+                  style={{ ...styles.playerListHeadingText, marginLeft: 0 }}
+                >
+                  Coins
+                </Text>
               </View>
             ) : (
               <></>
@@ -391,6 +406,7 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                       >
                         <Text style={styles.playerListValueText}>
                           {investment?.playerName}
+                          {'\n'}({investment?.player?.team})
                         </Text>
                       </View>
                       <View
@@ -474,6 +490,7 @@ const styles = StyleSheet.create({
   playerHeading: {
     paddingVertical: 15,
     backgroundColor: '#33291e',
+    paddingHorizontal: 5,
     flexDirection: 'row',
     marginTop: 15,
   },
@@ -481,7 +498,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     width: '25%',
-    paddingLeft: 20,
+    paddingLeft: 25,
     fontWeight: '500',
   },
   playerList: {

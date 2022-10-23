@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import {
   Text,
   TextInput,
@@ -19,7 +19,7 @@ import axios from 'axios';
 import ProgressBar from 'react-native-progress/Bar';
 import { Ionicons } from '@expo/vector-icons';
 
-import { Search, Header, Input, Content } from './styles';
+import { Search, Header, Input, Content, ListItem } from './styles';
 import growth from './../../assets/icons/growth.png';
 import down from './../../assets/icons/down.png';
 import coins from './../../assets/icons/coins.png';
@@ -179,8 +179,20 @@ const Players: React.FC = ({ navigation }: any) => {
       </Header>
 
       <View style={styles.playerHeading}>
-        <Text style={styles.playerListHeadingText}>Player List</Text>
-        <Text style={styles.playerValueHeadingText}>Value (Coins)</Text>
+        <Text style={{ ...styles.playerListHeadingText, marginLeft: 10 }}>
+          Player Name
+        </Text>
+        <Text style={{ ...styles.playerListHeadingText, marginLeft: -8 }}>
+          Country
+        </Text>
+        <Text
+          style={{
+            ...styles.playerListHeadingText,
+            marginLeft: '-15%',
+          }}
+        >
+          Value (Coins)
+        </Text>
       </View>
 
       <ScrollView
@@ -197,40 +209,38 @@ const Players: React.FC = ({ navigation }: any) => {
           <View style={{ paddingBottom: 20 }}>
             {playerSearchResultList.data.map(
               (player: Player, index: number) => (
-                <TouchableOpacity
-                  key={`list-player-${index}`}
-                  onPress={() => gotoPlayerInvestment(player)}
-                >
-                  <View style={styles.playerList}>
-                    <View style={styles.playerListTitle}>
-                      <Text
-                        style={{
-                          marginRight: 8,
-                          fontSize: 13,
-                          fontWeight: '500',
-                        }}
-                      >
-                        {player.name}
-                      </Text>
-                      {/* <Image style={{ marginRight: 8 }} source={growth || down} />
+                <Fragment key={`list-player-${index}`}>
+                  <ListItem onPress={() => gotoPlayerInvestment(player)}>
+                    <View style={styles.playerList}>
+                      <View style={styles.playerListValue}>
+                        <Text style={styles.playerListValueText}>
+                          {player.name}
+                        </Text>
+                        {/* <Image style={{ marginRight: 8 }} source={growth || down} />
                       <Text style={{ fontSize: 13, fontWeight: '500' }}>
                         +1.2%
                       </Text> */}
-                    </View>
-                    <View style={styles.playerListValue}>
-                      <Text
+                      </View>
+                      <View style={styles.playerListValue}>
+                        <Text style={styles.playerListValueText}>
+                          {player.team}
+                        </Text>
+                      </View>
+                      <View
                         style={{
-                          marginRight: 8,
-                          fontSize: 13,
-                          fontWeight: '500',
+                          ...styles.playerListValue,
+                          justifyContent: 'flex-end',
+                          width: '16%',
                         }}
                       >
-                        {player.value}
-                      </Text>
-                      <Image source={coins} />
+                        <Text style={styles.playerListValueText}>
+                          {player.value}
+                        </Text>
+                        <Image source={coins} />
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  </ListItem>
+                </Fragment>
               ),
             )}
           </View>
@@ -266,41 +276,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#3185fc',
     paddingHorizontal: 5,
     flexDirection: 'row',
-    marginBottom: 5,
+    marginTop: 15,
   },
   playerListHeadingText: {
     color: '#fff',
     fontSize: 14,
-    width: '70%',
-    paddingLeft: 8,
+    width: '42%',
+    paddingHorizontal: 10,
     fontWeight: '500',
-  },
-  playerValueHeadingText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '500',
-    paddingLeft: 10,
   },
   playerList: {
     flexDirection: 'row',
-    marginTop: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-    width: winWidth - 30,
-    textAlign: 'center',
-  },
-  playerListTitle: {
-    width: '75%',
-    paddingLeft: 10,
-    flexDirection: 'row',
+    marginTop: 2,
+    width: '100%',
   },
   playerListValue: {
-    marginRight: -8,
+    width: '42%',
     flexDirection: 'row',
-    textAlign: 'right',
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    paddingHorizontal: 10,
+  },
+  playerListValueText: {
+    marginRight: 8,
+    fontSize: 13,
+    fontWeight: '500',
   },
 });
 

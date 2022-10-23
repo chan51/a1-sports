@@ -61,3 +61,12 @@ export const SearchText = styled.Text`
   color: #9f9f9f;
   padding-left: 5px;
 `;
+
+export const ListItem = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})`
+  padding: 10px 15px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;

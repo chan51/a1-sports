@@ -28,12 +28,12 @@ export const API_URLS = {
     GetUserCoins: API_BASE.APIv1 + 'get-user-coins',
     SubmitInvestment: API_BASE.APIv1 + 'submit-investment',
     GetUserInvestments: API_BASE.APIv1 + 'get-user-investments',
+    GetLeaders: API_BASE.APIv1 + 'get-leaders',
   },
 
   Players: {
     GetPlayers: API_BASE.APIv1 + 'get-players?searchKeyword=',
     CreateRecentSearch: API_BASE.APIv1 + 'create-recent-search',
-    GetLeaders: API_BASE.APIv1 + 'get-leaders',
     GetPlayerLastInvestment: API_BASE.APIv1 + 'get-player-last-investment',
   },
 

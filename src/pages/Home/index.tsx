@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   ScrollView,
   RefreshControl,
@@ -17,7 +17,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { useFocusEffect } from '@react-navigation/native';
 import ProgressBar from 'react-native-progress/Bar';
 
-import { Container, UserImage } from './styles';
+import { Container, ListItem } from './styles';
 import PlayerService from '../../services/player.service';
 import { isOnHome, utilService, updateHome } from '../../services/util.service';
 
@@ -228,8 +228,20 @@ const Home: React.FC = ({ navigation, route }: any) => {
           </View> */}
 
           <View style={styles.playerHeading}>
-            <Text style={styles.playerListHeadingText}>Top Gainers</Text>
-            <Text style={styles.playerValueHeadingText}>Value (Coins)</Text>
+            <Text style={{ ...styles.playerListHeadingText, marginLeft: 10 }}>
+              Top Gainers
+            </Text>
+            <Text style={{ ...styles.playerListHeadingText, marginLeft: -8 }}>
+              Country
+            </Text>
+            <Text
+              style={{
+                ...styles.playerListHeadingText,
+                marginLeft: '-15%',
+              }}
+            >
+              Value (Coins)
+            </Text>
           </View>
           <ScrollView
             nestedScrollEnabled={true}
@@ -247,40 +259,38 @@ const Home: React.FC = ({ navigation, route }: any) => {
             {allPlayers.length && !refreshing ? (
               <>
                 {allPlayers.map((player: Player, index: number) => (
-                  <TouchableOpacity
-                    key={`gainer-player-${index}`}
-                    onPress={() => gotoPlayerInvestment(player)}
-                  >
-                    <View style={styles.playerList}>
-                      <View style={styles.playerListTitle}>
-                        <Text
+                  <Fragment key={`gainer-player-${index}`}>
+                    <ListItem onPress={() => gotoPlayerInvestment(player)}>
+                      <View style={styles.playerList}>
+                        <View style={styles.playerListValue}>
+                          <Text style={styles.playerListValueText}>
+                            {player.name}
+                          </Text>
+                          {/* <Image style={{ marginRight: 8 }} source={growth || down} />
+                      <Text style={{ fontSize: 13, fontWeight: '500' }}>
+                        +1.2%
+                      </Text> */}
+                        </View>
+                        <View style={styles.playerListValue}>
+                          <Text style={styles.playerListValueText}>
+                            {player.team}
+                          </Text>
+                        </View>
+                        <View
                           style={{
-                            marginRight: 8,
-                            fontSize: 13,
-                            fontWeight: '500',
+                            ...styles.playerListValue,
+                            justifyContent: 'flex-end',
+                            width: '16%',
                           }}
                         >
-                          {player.name}
-                        </Text>
-                        {/* <Image style={{ marginRight: 8 }} source={growth || down} />
-                        <Text style={{ fontSize: 13, fontWeight: '500' }}>
-                          +1.2%
-                        </Text> */}
+                          <Text style={styles.playerListValueText}>
+                            {player.value}
+                          </Text>
+                          <Image source={coins} />
+                        </View>
                       </View>
-                      <View style={styles.playerListValue}>
-                        <Text
-                          style={{
-                            marginRight: 8,
-                            fontSize: 13,
-                            fontWeight: '500',
-                          }}
-                        >
-                          {player.value}
-                        </Text>
-                        <Image source={coins} />
-                      </View>
-                    </View>
-                  </TouchableOpacity>
+                    </ListItem>
+                  </Fragment>
                 ))}
               </>
             ) : refreshing ? (
@@ -304,7 +314,7 @@ const Home: React.FC = ({ navigation, route }: any) => {
               <TouchableOpacity onPress={() => gotoPlayerList()}>
                 <View style={styles.button}>
                   <Text style={{ fontSize: 13, fontWeight: '500' }}>
-                    View All Players
+                    Marketplace
                   </Text>
                   <Image source={arrowRight} />
                 </View>
@@ -342,39 +352,30 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: '#3185fc',
     paddingHorizontal: 5,
-    marginTop: 5,
     flexDirection: 'row',
-    marginBottom: 5,
+    marginTop: 15,
   },
   playerListHeadingText: {
     color: '#fff',
     fontSize: 14,
-    width: '70%',
-    paddingLeft: 8,
+    width: '42%',
+    paddingHorizontal: 10,
     fontWeight: '500',
-  },
-  playerValueHeadingText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '500',
-    paddingLeft: 10,
   },
   playerList: {
     flexDirection: 'row',
-    marginTop: 10,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-    width: winWidth - 30,
-    textAlign: 'center',
-  },
-  playerListTitle: {
-    width: '75%',
-    paddingLeft: 10,
-    flexDirection: 'row',
+    marginTop: 2,
+    width: '100%',
   },
   playerListValue: {
-    paddingLeft: 60,
+    width: '42%',
     flexDirection: 'row',
+    paddingHorizontal: 10,
+  },
+  playerListValueText: {
+    marginRight: 8,
+    fontSize: 13,
+    fontWeight: '500',
   },
   buttonContainer: {
     marginTop: 20,

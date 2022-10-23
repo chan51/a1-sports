@@ -204,6 +204,9 @@ const Investment: React.FC = ({ navigation, route }: any) => {
             <Text style={{ fontSize: 15, fontWeight: '500' }}>
               {playerDetails?.name}
             </Text>
+            <Text style={{ fontSize: 15, fontWeight: '500' }}>
+              {playerDetails?.team}
+            </Text>
           </ProfileDetailsData>
         </ProfileDetails>
 

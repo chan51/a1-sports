@@ -16,11 +16,11 @@ import { useFocusEffect } from '@react-navigation/core';
 
 import coins from './../../assets/icons/coins.png';
 
-import LeaderService from '../../services/leader.service';
+import UserService from '../../services/user.service';
 import { utilService } from '../../services/util.service';
 
+const userService = new UserService();
 const winDimension = Dimensions.get('window');
-const leaderService = new LeaderService();
 
 const LeaderBoard: React.FC = ({ navigation }: any) => {
   const [page, setPage] = useState({
@@ -57,7 +57,7 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
   }, [page]);
 
   const getLeader = (skip, limit) => {
-    leaderService.getLeaders(skip, limit).then((response: any) => {
+    userService.getLeaders().then((response: any) => {
       const newLeaders = [...leaders, ...(response.leaders || [])];
       setLeaders(utilService.getUniqueArray(newLeaders, 'id', true));
 
@@ -109,12 +109,11 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
     });
   };
 
-  const clickEventForLeader = player => {
+  const clickEventForLeader = ({ userId }) => {
     setButtonClicked(true);
     if (!buttonClicked) {
-      navigation.navigate('Investment', {
-        userId: player.id,
-        player,
+      navigation.navigate('UserProfile', {
+        userId,
       });
       setTimeout(() => setButtonClicked(false), 500);
     }
@@ -143,7 +142,7 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
                 <View style={styles.playerList}>
                   <View style={styles.playerListTitel}>
                     <Text style={{ fontSize: 13, fontWeight: '500' }}>
-                      {leader.name}
+                      {leader.userName}
                     </Text>
                   </View>
                   <View style={styles.playerListValue}>
@@ -152,9 +151,11 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
                         marginRight: 8,
                         fontSize: 13,
                         fontWeight: '500',
+                        justifyContent: 'flex-end',
+                        alignContent: 'flex-end',
                       }}
                     >
-                      {leader.value}
+                      {leader.coins}
                     </Text>
                     <Image source={coins} />
                   </View>
@@ -240,11 +241,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   playerListValue: {
-    width: 50,
-    paddingLeft: 5,
+    width: 80,
+    marginLeft: -5,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignContent: 'flex-end',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
   },
 });
 export const ListItem = styled.TouchableOpacity.attrs({

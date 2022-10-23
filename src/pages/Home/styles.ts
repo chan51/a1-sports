@@ -78,5 +78,13 @@ export const UserImage = styled.Image`
   shadow-radius: 5px;
   border-color: #3a8afc;
   border-width: 3px;
+`;
 
+export const ListItem = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})`
+  padding: 10px 15px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;

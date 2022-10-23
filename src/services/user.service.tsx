@@ -126,6 +126,11 @@ class UserService {
     const url = `${API_URLS.Users.GetUserInvestments}?skip=${skip}&limit=${limit}`;
     return await APIService({ url });
   };
+
+  getLeaders = async () => {
+    const url = `${API_URLS.Users.GetLeaders}`;
+    return await APIService({ url });
+  };
 }
 
 export default UserService;
