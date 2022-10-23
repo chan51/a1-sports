@@ -34,7 +34,7 @@ import {
 
 import UserService from '../../services/user.service';
 import PlayerService from '../../services/player.service';
-import { utilService } from '../../services/util.service';
+import { utilService, isOnProfile } from '../../services/util.service';
 
 const userService = new UserService();
 const playerService = new PlayerService();
@@ -134,6 +134,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
         utilService.showMessage(
           `Successfully invested in player ${playerDetails?.name}!`,
         );
+        isOnProfile.next(true);
         goBack();
       });
   };
@@ -145,7 +146,8 @@ const Investment: React.FC = ({ navigation, route }: any) => {
       fromSell: true,
       investment: playerLastInvestment.investment - investment,
       totalInvestment:
-        playerLastInvestment.totalInvestment - investment * playerDetails.value,
+        playerLastInvestment.totalInvestment -
+        investment * playerLastInvestment.playerValue,
       isSell: investment === playerLastInvestment.investment,
     };
     userService
@@ -162,6 +164,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
         utilService.showMessage(
           `Successfully sold investment of player ${playerDetails?.name}!`,
         );
+        isOnProfile.next(true);
         goBack();
       });
   };
@@ -299,7 +302,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={() => buyInvestment()}
+            onPress={() => (investment ? buyInvestment() : null)}
           >
             <View
               style={{
@@ -314,9 +317,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() =>
-                investment &&
-                investment * playerDetails.value <=
-                  playerLastInvestment.totalInvestment
+                investment && investment <= playerLastInvestment.investment
                   ? sellInvestment()
                   : null
               }
@@ -325,9 +326,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
                 style={{
                   ...styles.button,
                   backgroundColor:
-                    investment &&
-                    investment * playerDetails.value <=
-                      playerLastInvestment.totalInvestment
+                    investment && investment <= playerLastInvestment.investment
                       ? '#fae04b'
                       : '#d5dbe5',
                 }}

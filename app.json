@@ -10,8 +10,8 @@
     "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#000",
+      "resizeMode": "contain",
+      "backgroundColor": "#fff",
       "backgroundPosition": "center"
     },
     "androidStatusBar": {

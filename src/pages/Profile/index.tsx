@@ -359,12 +359,16 @@ const Profile: React.FC = ({ navigation, route }: any) => {
               </ProfileDetailsData>
             </ProfileDetails>
 
-            <View style={styles.playerHeading}>
-              <Text style={styles.playerListHeadingText}>Player</Text>
-              <Text style={styles.playerListHeadingText}>IV</Text>
-              <Text style={styles.playerListHeadingText}>Value</Text>
-              <Text style={styles.playerListHeadingText}>Coins</Text>
-            </View>
+            {(investments || []).length ? (
+              <View style={styles.playerHeading}>
+                <Text style={styles.playerListHeadingText}>Player</Text>
+                <Text style={styles.playerListHeadingText}>IV</Text>
+                <Text style={styles.playerListHeadingText}>Value</Text>
+                <Text style={styles.playerListHeadingText}>Coins</Text>
+              </View>
+            ) : (
+              <></>
+            )}
 
             <FlatList
               contentContainerStyle={styles.flatListContentContainerStyle}
@@ -428,8 +432,9 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                   <Image
                     source={require('../../assets/lottie-animations/investment.gif')}
                     style={{
+                      top: (investments || []).length ? 0 : 10,
                       width: '100%',
-                      height: 560,
+                      height: (investments || []).length ? 560 : 615,
                       position: 'absolute',
                     }}
                   />
