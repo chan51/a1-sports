@@ -15,7 +15,6 @@ import {
 import * as SecureStore from 'expo-secure-store';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { useFocusEffect } from '@react-navigation/native';
-import ProgressBar from 'react-native-progress/Bar';
 
 import { Container, ListItem } from './styles';
 import PlayerService from '../../services/player.service';
@@ -28,7 +27,6 @@ import coins from './../../assets/icons/coins.png';
 import arrowRight from './../../assets/icons/arrow-right.png';
 import { Player } from '../../models/player.interface';
 
-const { width: winWidth } = Dimensions.get('screen');
 const wait = (timeout: any) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
@@ -61,7 +59,7 @@ const Home: React.FC = ({ navigation, route }: any) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => {
-      _refreshFeeds();
+      _refreshTopGainers();
     });
   }, []);
 
@@ -77,7 +75,7 @@ const Home: React.FC = ({ navigation, route }: any) => {
               switch (type) {
                 case 'refreshPage':
                   if (!refreshing) {
-                    _refreshFeeds();
+                    _refreshTopGainers();
                     setTimeout(() => {
                       isOnHome.next({ type: 'refreshPage', data: false });
                     }, 0);
@@ -103,7 +101,7 @@ const Home: React.FC = ({ navigation, route }: any) => {
   useEffect(() => {
     if (isMounted) {
       getUserId();
-      getFeeds();
+      getTopGainers();
     }
     return () => {
       setIsMounted(false);
@@ -158,13 +156,13 @@ const Home: React.FC = ({ navigation, route }: any) => {
     }
   };
 
-  const _refreshFeeds = () => {
+  const _refreshTopGainers = () => {
     if (isMounted) {
-      getFeeds();
+      getTopGainers();
     }
   };
 
-  const getFeeds = async () => {
+  const getTopGainers = async () => {
     const playerList: any = await playerService.getPlayers({
       topGainers: true,
     });
@@ -256,7 +254,7 @@ const Home: React.FC = ({ navigation, route }: any) => {
               />
             }
           >
-            {allPlayers.length && !refreshing ? (
+            {allPlayers.length ? (
               <>
                 {allPlayers.map((player: Player, index: number) => (
                   <Fragment key={`gainer-player-${index}`}>
@@ -267,9 +265,9 @@ const Home: React.FC = ({ navigation, route }: any) => {
                             {player.name}
                           </Text>
                           {/* <Image style={{ marginRight: 8 }} source={growth || down} />
-                      <Text style={{ fontSize: 13, fontWeight: '500' }}>
-                        +1.2%
-                      </Text> */}
+                            <Text style={{ fontSize: 13, fontWeight: '500' }}>
+                              +1.2%
+                          </Text> */}
                         </View>
                         <View style={styles.playerListValue}>
                           <Text style={styles.playerListValueText}>
@@ -281,7 +279,6 @@ const Home: React.FC = ({ navigation, route }: any) => {
                             ...styles.playerListValue,
                             justifyContent: 'flex-end',
                             width: '20%',
-
                           }}
                         >
                           <Text style={styles.playerListValueText}>
@@ -294,19 +291,6 @@ const Home: React.FC = ({ navigation, route }: any) => {
                   </Fragment>
                 ))}
               </>
-            ) : refreshing ? (
-              <View style={styles.content}>
-                <ProgressBar
-                  indeterminate
-                  animated={true}
-                  color="#F25813"
-                  width={winWidth - 50}
-                  height={30}
-                  borderRadius={4}
-                  animationType="timing"
-                  unfilledColor="rgba(0,0,0,.7)"
-                />
-              </View>
             ) : (
               <></>
             )}

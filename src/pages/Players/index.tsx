@@ -1,32 +1,28 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   View,
-  ScrollView,
   Animated,
   Easing,
   Image,
   Dimensions,
-  RefreshControl,
-  SafeAreaView,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/core';
 
 import axios from 'axios';
-import ProgressBar from 'react-native-progress/Bar';
 import { Ionicons } from '@expo/vector-icons';
 
-import { Search, Header, Input, Content, ListItem } from './styles';
-import growth from './../../assets/icons/growth.png';
-import down from './../../assets/icons/down.png';
-import coins from './../../assets/icons/coins.png';
+import { Search, Header, Input } from './styles';
 
 import { Player } from '../../models/player.interface';
 import PlayerService from '../../services/player.service';
 import { utilService } from '../../services/util.service';
+import PlayerItem from './playerItem';
 
 let typingTimer: any;
 let doneTypingInterval: number = 500;
@@ -39,10 +35,14 @@ const Players: React.FC = ({ navigation }: any) => {
   const [isSearchActive, setSearchActive] = useState(false);
   const [buttonClicked, setButtonClicked] = useState(false);
 
-  const [playerSearchResultList, setPlayerSearchResultList] = useState<any>({
-    data: [],
-    loading: true,
+  const [page, setPage] = useState({
+    skip: 0,
+    limit: 20,
   });
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(true);
+  const [players, setPlayers] = useState([]);
+  const [totalPlayers, setTotalPlayers] = useState(0);
 
   const searchInput = useRef<TextInput>();
   const source = axios.CancelToken.source();
@@ -65,11 +65,8 @@ const Players: React.FC = ({ navigation }: any) => {
 
     typingTimer = setTimeout(() => {
       cancelToken = null;
-      setPlayerSearchResultList({
-        ...playerSearchResultList,
-        loading: true,
-      });
-      getSearchResult(search);
+      setRefreshing(true);
+      getSearchResult();
     }, doneTypingInterval);
   }, [search]);
 
@@ -85,25 +82,22 @@ const Players: React.FC = ({ navigation }: any) => {
     }, []),
   );
 
-  const onRefresh = React.useCallback(() => {
-    setPlayerSearchResultList({
-      ...playerSearchResultList,
-      loading: true,
-    });
-    utilService.wait(2000).then(() => {
-      getSearchResult(search);
-    });
-  }, []);
-
-  const getSearchResult = (searchKeyword: string = '') => {
+  const getSearchResult = () => {
     playerService
-      .getPlayers({ searchKeyword }, cancelToken)
-      .then(({ status, players }: any) => {
+      .getPlayers(
+        { searchKeyword: search, skip: page.skip, limit: page.limit },
+        cancelToken,
+      )
+      .then(({ status, players: playerList, playersLength }: any) => {
         if (status) {
-          setPlayerSearchResultList({
-            data: players || [],
-            loading: false,
-          });
+          const newPlayers = [...players, ...(playerList || [])];
+          setPlayers(utilService.getUniqueArray(newPlayers, 'id', true, ''));
+
+          setRefreshing(false);
+          setLoadingMore(false);
+          if (!totalPlayers) {
+            setTotalPlayers(playersLength);
+          }
         }
       });
   };
@@ -123,7 +117,6 @@ const Players: React.FC = ({ navigation }: any) => {
       const data = {
         redirectId: player.id,
         description: player.name,
-        // filePath: player.profile,
         searchType: 'player',
       };
       playerService.createRecentSearch(data);
@@ -135,8 +128,58 @@ const Players: React.FC = ({ navigation }: any) => {
     }
   };
 
+  useEffect(() => {
+    if (!page.skip || page.skip < totalPlayers) {
+      getSearchResult();
+    } else {
+      setRefreshing(false);
+      setLoadingMore(false);
+    }
+  }, [page]);
+
+  const _handleRefresh = () => {
+    setRefreshing(true);
+    setPlayers([]);
+    setTotalPlayers(0);
+    setPage({
+      skip: 0,
+      limit: 20,
+    });
+  };
+
+  const _handleLoadMore = () => {
+    if (page.skip < totalPlayers && !loadingMore && !refreshing) {
+      setLoadingMore(true);
+      setPage({
+        skip: page.skip + page.limit,
+        limit: page.limit,
+      });
+    }
+  };
+
+  const _renderFooter = () => {
+    if (!loadingMore) return null;
+
+    return (
+      <View
+        style={{
+          position: 'relative',
+          width: winWidth,
+          height: 50,
+          paddingVertical: 20,
+          borderTopWidth: 5,
+          marginTop: 10,
+          marginBottom: 20,
+          borderColor: '#F25813',
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Header>
         <Search>
           <Ionicons
@@ -188,80 +231,48 @@ const Players: React.FC = ({ navigation }: any) => {
         <Text
           style={{
             ...styles.playerListHeadingText,
-            marginLeft: '-15%',
+            marginLeft: '-13%',
           }}
         >
           Value (Coins)
         </Text>
       </View>
 
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            enabled={!playerSearchResultList.loading}
-            refreshing={false}
-            onRefresh={onRefresh}
-          />
-        }
-      >
-        {playerSearchResultList.data.length &&
-        !playerSearchResultList.loading ? (
-          <View style={{ paddingBottom: 20 }}>
-            {playerSearchResultList.data.map(
-              (player: Player, index: number) => (
-                <Fragment key={`list-player-${index}`}>
-                  <ListItem onPress={() => gotoPlayerInvestment(player)}>
-                    <View style={styles.playerList}>
-                      <View style={styles.playerListValue}>
-                        <Text style={styles.playerListValueText}>
-                          {player.name}
-                        </Text>
-                        {/* <Image style={{ marginRight: 8 }} source={growth || down} />
-                      <Text style={{ fontSize: 13, fontWeight: '500' }}>
-                        +1.2%
-                      </Text> */}
-                      </View>
-                      <View style={styles.playerListValue}>
-                        <Text style={styles.playerListValueText}>
-                          {player.team}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          ...styles.playerListValue,
-                          justifyContent: 'flex-end',
-                          width: '20%',
-                        }}
-                      >
-                        <Text style={styles.playerListValueText}>
-                          {player.value}
-                        </Text>
-                        <Image source={coins} />
-                      </View>
-                    </View>
-                  </ListItem>
-                </Fragment>
-              ),
-            )}
-          </View>
-        ) : playerSearchResultList.loading ? (
-          <Content style={{ marginTop: '60%', textAlign: 'center' }}>
-            <ProgressBar
-              indeterminate
-              animated={true}
-              color="#F25813"
-              width={winWidth - 50}
-              height={30}
-              borderRadius={4}
-              animationType="timing"
-              unfilledColor="rgba(0,0,0,.7)"
+      <View style={styles.scrollView}>
+        <FlatList
+          contentContainerStyle={styles.flatListContentContainerStyle}
+          onRefresh={_handleRefresh}
+          refreshing={refreshing}
+          data={players}
+          keyExtractor={player => player.id.toString()}
+          renderItem={({ item: player }) => (
+            <PlayerItem
+              player={player}
+              gotoPlayerInvestment={gotoPlayerInvestment}
             />
-          </Content>
-        ) : (
-          <></>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+          )}
+          onEndReached={_handleLoadMore}
+          onEndReachedThreshold={0.5}
+          initialNumToRender={20}
+          ListFooterComponent={_renderFooter}
+          removeClippedSubviews={true}
+          ListEmptyComponent={() =>
+            !refreshing && !loadingMore ? (
+              <Image
+                source={require('../../assets/lottie-animations/investment.gif')}
+                style={{
+                  width: '100%',
+                  height: 560,
+                  position: 'absolute',
+                }}
+              />
+            ) : (
+              <></>
+            )
+          }
+        />
+      </View>
+    </View>
   );
 };
 
@@ -271,9 +282,37 @@ const styles = StyleSheet.create({
     marginTop: 2,
     backgroundColor: '#fff',
   },
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  flatListContentContainerStyle: {
+    flexDirection: 'column',
+    width: '100%',
+    flexGrow: 1,
+    minHeight: 600,
+  },
+  heading: {
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+  },
+  headingText: {
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  playerIconlist: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+  },
+  playerIconlistItem: {
+    paddingHorizontal: 6,
+  },
   playerHeading: {
     paddingVertical: 15,
-    backgroundColor: '#3185fc',
+    backgroundColor: '#aa556f',
     paddingHorizontal: 5,
     flexDirection: 'row',
     marginTop: 15,
@@ -283,21 +322,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     width: '42%',
     paddingHorizontal: 10,
-    fontWeight: '500',
-  },
-  playerList: {
-    flexDirection: 'row',
-    marginTop: 2,
-    width: '100%',
-  },
-  playerListValue: {
-    width: '40%',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-  },
-  playerListValueText: {
-    marginRight: 8,
-    fontSize: 13,
     fontWeight: '500',
   },
 });

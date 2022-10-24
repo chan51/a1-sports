@@ -39,7 +39,7 @@ import ProgressiveImage from '../../components/ProgressiveImage/ProgressiveImage
 import coins from './../../assets/icons/coins.png';
 
 const userService = new UserService();
-const { width: winWidth, height: winHeight } = Dimensions.get('window');
+const { width: winWidth } = Dimensions.get('window');
 
 const Profile: React.FC = ({ navigation, route }: any) => {
   let {
@@ -266,11 +266,11 @@ const Profile: React.FC = ({ navigation, route }: any) => {
         style={{
           position: 'relative',
           width: winWidth,
-          height: winHeight,
+          height: 50,
           paddingVertical: 20,
           borderTopWidth: 5,
           marginTop: 10,
-          marginBottom: 10,
+          marginBottom: 20,
           borderColor: '#F25813',
         }}
       >

@@ -169,8 +169,13 @@ const utilService = {
       .join(' ');
   },
 
-  getUniqueArray: function (arr, key = 'id', updateOld = false) {
-    const result = [];
+  getUniqueArray: function (
+    arr,
+    key = 'id',
+    updateOld = false,
+    sortKey = 'createdAt',
+  ) {
+    let result = [];
     const map = new Map();
     for (const item of arr) {
       if (item && !map.has(item[key])) {
@@ -183,7 +188,10 @@ const utilService = {
         result[previousContentIndex] = { ...item };
       }
     }
-    return result.sort((a, b) => b.createdAt - a.createdAt);
+    if (sortKey) {
+      result = result.sort((a, b) => b[sortKey] - a[sortKey]);
+    }
+    return result;
   },
 
   getAgoTimestamp: function (date) {

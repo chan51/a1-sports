@@ -59,7 +59,7 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
   const getLeader = (skip, limit) => {
     userService.getLeaders().then((response: any) => {
       const newLeaders = [...leaders, ...(response.leaders || [])];
-      setLeaders(utilService.getUniqueArray(newLeaders, 'id', true));
+      setLeaders(utilService.getUniqueArray(newLeaders, 'id', true, 'coins'));
 
       setRefreshing(false);
       setLoadingMore(false);
@@ -86,11 +86,11 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
         style={{
           position: 'relative',
           width: winDimension.width,
-          height: winDimension.height,
+          height: 50,
           paddingVertical: 20,
           borderTopWidth: 5,
           marginTop: 10,
-          marginBottom: 10,
+          marginBottom: 20,
           borderColor: '#F25813',
         }}
       >
