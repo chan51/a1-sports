@@ -246,7 +246,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
           </View>
           <View style={styles.playerListValue}>
             <Text style={{ marginRight: 8, fontSize: 13, fontWeight: '400' }}>
-              {currentUserCoins || currentUser?.coins}
+              {(currentUserCoins || currentUser?.coins || 0).toFixed(2)}
             </Text>
             <Image source={coins} />
           </View>

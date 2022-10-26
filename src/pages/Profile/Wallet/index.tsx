@@ -10,8 +10,6 @@ import {
   ContentMain,
   HeadingLeftTitle,
   Content,
-  PrimaryButton,
-  PrimaryButtonText,
   HeadingLeft,
   ButtonOuter,
   IconImage,
@@ -54,21 +52,14 @@ const Wallet: React.FC = ({ navigation, route }: any) => {
 
   const handleParams = () => {
     SecureStore.getItemAsync('userCoins').then(userCoins => {
-      const coins: any = JSON.parse(userCoins || '{}');
-      setCoins(coins.coins || 0);
+      setCoins(+(+userCoins).toFixed(2) || 0);
 
       userService.getUserCoins(userId).then(({ status, userCoins }: any) => {
         if (status) {
           userCoins = userCoins || {};
-          setCoins(userCoins.coins || 0);
+          setCoins(+(+userCoins).toFixed(2) || 0);
 
-          SecureStore.setItemAsync(
-            'userCoins',
-            JSON.stringify({
-              coins: userCoins.coins || 0,
-              likes: userCoins.likes || 0,
-            }),
-          );
+          SecureStore.setItemAsync('userCoins', (+userCoins).toFixed(2) || '0');
         }
       });
     });
