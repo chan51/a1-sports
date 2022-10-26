@@ -1,8 +1,8 @@
 export const API_BASE = {
-  baseHost: 'https://sportyfy.io/a1sports',
-  basePort: '',
-  // baseHost: 'http://192.168.214.208',
-  // basePort: ':1410',
+  // baseHost: 'https://sportyfy.io/a1sports',
+  // basePort: '',
+  baseHost: 'http://192.168.35.208',
+  basePort: ':1410',
   get baseURL() {
     return this.baseHost + (this.basePort || '');
   },

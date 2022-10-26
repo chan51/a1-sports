@@ -39,25 +39,7 @@
         "backgroundColor": "#F5AF19"
       },
       "useNextNotificationsApi": true,
-      "googleServicesFile": "./google-services.json",
-      "intentFilters": [
-        {
-          "action": "VIEW",
-          "data": [
-            {
-              "scheme": "http",
-              "host": "*.a1sports.com",
-              "pathPrefix": "/app"
-            },
-            {
-              "scheme": "https",
-              "host": "*.a1sports.com",
-              "pathPrefix": "/app"
-            }
-          ],
-          "category": ["BROWSABLE", "DEFAULT"]
-        }
-      ]
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
       "bundleIdentifier": "com.a1sports.ios",

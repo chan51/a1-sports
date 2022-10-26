@@ -51,15 +51,17 @@ const Wallet: React.FC = ({ navigation, route }: any) => {
   }, [isMounted]);
 
   const handleParams = () => {
-    SecureStore.getItemAsync('userCoins').then(userCoins => {
-      setCoins(+(+userCoins).toFixed(2) || 0);
+    SecureStore.getItemAsync('user').then((user: any) => {
+      user = JSON.parse(user) || {};
+      setCoins(+(+user.coins).toFixed(2) || 0);
 
       userService.getUserCoins(userId).then(({ status, userCoins }: any) => {
         if (status) {
-          userCoins = userCoins || {};
+          userCoins = userCoins.coins || 0;
           setCoins(+(+userCoins).toFixed(2) || 0);
 
-          SecureStore.setItemAsync('userCoins', (+userCoins).toFixed(2) || '0');
+          user = { ...user, coins: (+userCoins).toFixed(2) || '0' };
+          SecureStore.setItemAsync('user', JSON.stringify(user));
         }
       });
     });

@@ -28,6 +28,39 @@ const NotificationBox: React.FC = ({ navigation }: any) => {
         <View>
           <Text>{'\n'}</Text>
         </View>
+        <Text>
+          Players value will be updated within 30mins after the completion of
+          every match
+        </Text>
+        <View>
+          <Text>{'\n'}</Text>
+        </View>
+        <View>
+          <Text>{'\n'}</Text>
+        </View>
+
+        <Text>INFORMATION ABOUT APPLICATION:-</Text>
+        <View>
+          <Text>{'\n'}</Text>
+        </View>
+
+        <Text>
+          1. User with highest coins at the end of the tournament will be
+          declared winner and will get a gift worth 10k
+        </Text>
+        <View>
+          <Text>{'\n'}</Text>
+        </View>
+        <Text>
+          2. Your coin updates will be available in your wallet section.
+        </Text>
+        <View>
+          <Text>{'\n'}</Text>
+        </View>
+        <Text>3.For any query you can write us in feedback section.</Text>
+        <View>
+          <Text>{'\n'}</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
