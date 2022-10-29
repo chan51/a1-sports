@@ -226,16 +226,21 @@ const Profile: React.FC = ({ navigation, route }: any) => {
   }, [page]);
 
   const getUserInvestments = (skip, limit) => {
-    userService.getUserInvestments(skip, limit).then((response: any) => {
-      const newInvestments = [...investments, ...(response.investments || [])];
-      setInvestments(utilService.getUniqueArray(newInvestments, 'id', true));
+    userService
+      .getUserInvestments(skip, limit, userId)
+      .then((response: any) => {
+        const newInvestments = [
+          ...investments,
+          ...(response.investments || []),
+        ];
+        setInvestments(utilService.getUniqueArray(newInvestments, 'id', true));
 
-      setRefreshing(false);
-      setLoadingMore(false);
-      if (!totalInvestments) {
-        setTotalInvestments(response.investmentsLength);
-      }
-    });
+        setRefreshing(false);
+        setLoadingMore(false);
+        if (!totalInvestments) {
+          setTotalInvestments(response.investmentsLength);
+        }
+      });
   };
 
   const _handleRefresh = () => {
@@ -318,7 +323,7 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                   <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Ionicons name="ios-arrow-back" size={22} color="black" />
                   </TouchableOpacity>
-                  <HeadingLeftTitle>{user?.name}</HeadingLeftTitle>
+                  <HeadingLeftTitle>A1 sports exchange</HeadingLeftTitle>
                 </HeadingLeft>
               ) : (
                 <HeadingRight>
@@ -353,8 +358,8 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                 >
                   {user?.name}
                 </Text>
-                <Text style={{ marginBottom: 3 }}>{user?.email}</Text>
-                <Text>{user?.mobile}</Text>
+                {/* <Text style={{ marginBottom: 3 }}>{user?.email}</Text>
+                <Text>{user?.mobile}</Text> */}
               </ProfileDetailsData>
             </ProfileDetails>
 
@@ -448,9 +453,9 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                   <Image
                     source={require('../../assets/lottie-animations/investment.gif')}
                     style={{
-                      top: (investments || []).length ? 0 : 10,
+                      top: 10,
                       width: '100%',
-                      height: (investments || []).length ? 560 : 615,
+                      height: '100%',
                       position: 'absolute',
                     }}
                   />

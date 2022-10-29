@@ -138,7 +138,8 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
         listeners={{
           focus: () => utilService.isOnProfileTab(true),
           blur: () => utilService.isOnProfileTab(false),
-          tabPress: $event => navigateToTab($event, 'Profile', { userId: '' }),
+          tabPress: $event =>
+            navigateToTab($event, 'Profile', { userId: '', refreshTab: true }),
         }}
         initialParams={initialParams}
         options={{

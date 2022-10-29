@@ -1,12 +1,9 @@
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-
 import styled from 'styled-components/native';
 
 export const Container = styled.View.attrs({
   // paddingTop: getStatusBarHeight(),
 })`
   flex: 1;
-
 `;
 
 export const Header = styled.View`
@@ -69,4 +66,14 @@ export const ListItem = styled.TouchableOpacity.attrs({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const HeadingText = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})`
+  font-size: 14px;
+  width: 42%;
+  padding-horizontal: 10px;
+  font-weight: 500;
+  margin-left: ${props => props.marginLeft};
 `;

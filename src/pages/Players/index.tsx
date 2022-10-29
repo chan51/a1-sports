@@ -15,9 +15,9 @@ import {
 import { useFocusEffect } from '@react-navigation/core';
 
 import axios from 'axios';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-import { Search, Header, Input } from './styles';
+import { Search, Header, Input, HeadingText } from './styles';
 
 import { Player } from '../../models/player.interface';
 import PlayerService from '../../services/player.service';
@@ -43,6 +43,11 @@ const Players: React.FC = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = React.useState(true);
   const [players, setPlayers] = useState([]);
   const [totalPlayers, setTotalPlayers] = useState(0);
+  const [currentSorting, setCurrentSorting] = useState({
+    name: 'team',
+    sort: 'asc',
+    otherSort: 'desc',
+  });
 
   const searchInput = useRef<TextInput>();
   const source = axios.CancelToken.source();
@@ -85,7 +90,12 @@ const Players: React.FC = ({ navigation }: any) => {
   const getSearchResult = () => {
     playerService
       .getPlayers(
-        { searchKeyword: search, skip: page.skip, limit: page.limit },
+        {
+          searchKeyword: search,
+          skip: page.skip,
+          limit: page.limit,
+          currentSorting,
+        },
         cancelToken,
       )
       .then(({ status, players: playerList, playersLength }: any) => {
@@ -178,6 +188,21 @@ const Players: React.FC = ({ navigation }: any) => {
     );
   };
 
+  const sortPlayerList = sortBy => {
+    let { name, sort, otherSort } = currentSorting;
+    if (name === sortBy) {
+      sort = otherSort;
+      otherSort = currentSorting.sort;
+    } else {
+      sort = 'asc';
+      otherSort = 'desc';
+    }
+    name = sortBy;
+
+    setCurrentSorting({ name, sort, otherSort });
+    _handleRefresh();
+  };
+
   return (
     <View style={styles.container}>
       <Header>
@@ -222,20 +247,88 @@ const Players: React.FC = ({ navigation }: any) => {
       </Header>
 
       <View style={styles.playerHeading}>
-        <Text style={{ ...styles.playerListHeadingText, marginLeft: 10 }}>
-          Player Name
-        </Text>
-        <Text style={{ ...styles.playerListHeadingText, marginLeft: -16 }}>
-          Country
-        </Text>
-        <Text
-          style={{
-            ...styles.playerListHeadingText,
-            marginLeft: '-13%',
-          }}
+        <HeadingText marginLeft={'10px'} onPress={() => sortPlayerList('name')}>
+          <Text style={styles.playerListHeadingText}>Player Name</Text>
+          <View style={{ flex: 1 }}>
+            <FontAwesome
+              style={{ marginTop: -16, left: 85 }}
+              name="sort-asc"
+              size={14}
+              color={
+                currentSorting.name === 'name' && currentSorting.sort === 'asc'
+                  ? '#3185fc'
+                  : '#fff'
+              }
+            ></FontAwesome>
+            <FontAwesome
+              style={{ marginTop: -13, left: 85 }}
+              name="sort-desc"
+              size={14}
+              color={
+                currentSorting.name === 'name' && currentSorting.sort === 'desc'
+                  ? '#3185fc'
+                  : '#fff'
+              }
+            ></FontAwesome>
+          </View>
+        </HeadingText>
+        <HeadingText
+          marginLeft={'-16px'}
+          onPress={() => sortPlayerList('team')}
         >
-          Value (Coins)
-        </Text>
+          <Text style={styles.playerListHeadingText}>Country</Text>
+          <View style={{ flex: 1 }}>
+            <FontAwesome
+              style={{ marginTop: -16, left: 53 }}
+              name="sort-asc"
+              size={14}
+              color={
+                currentSorting.name === 'team' && currentSorting.sort === 'asc'
+                  ? '#3185fc'
+                  : '#fff'
+              }
+            ></FontAwesome>
+            <FontAwesome
+              style={{ marginTop: -13, left: 53 }}
+              name="sort-desc"
+              size={14}
+              color={
+                currentSorting.name === 'team' && currentSorting.sort === 'desc'
+                  ? '#3185fc'
+                  : '#fff'
+              }
+            ></FontAwesome>
+          </View>
+        </HeadingText>
+        <HeadingText
+          marginLeft={'-13%'}
+          onPress={() => sortPlayerList('value')}
+        >
+          <Text style={styles.playerListHeadingText}>Value (Coins)</Text>
+          <View style={{ flex: 1 }}>
+            <FontAwesome
+              style={{ marginTop: -16, left: 88 }}
+              name="sort-asc"
+              size={14}
+              color={
+                currentSorting.name === 'value' && currentSorting.sort === 'asc'
+                  ? '#3185fc'
+                  : '#fff'
+              }
+            ></FontAwesome>
+            <FontAwesome
+              style={{ marginTop: -13, left: 88 }}
+              name="sort-desc"
+              size={14}
+              color={
+                currentSorting.name === 'value' &&
+                currentSorting.sort === 'desc'
+                  ? '#3185fc'
+                  : '#fff'
+              }
+            ></FontAwesome>
+          </View>
+        </HeadingText>
       </View>
 
       <View style={styles.scrollView}>
@@ -319,10 +412,6 @@ const styles = StyleSheet.create({
   },
   playerListHeadingText: {
     color: '#fff',
-    fontSize: 14,
-    width: '42%',
-    paddingHorizontal: 10,
-    fontWeight: '500',
   },
 });
 
