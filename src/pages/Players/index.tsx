@@ -71,7 +71,7 @@ const Players: React.FC = ({ navigation }: any) => {
     typingTimer = setTimeout(() => {
       cancelToken = null;
       setRefreshing(true);
-      getSearchResult();
+      resetAllDataForList();
     }, doneTypingInterval);
   }, [search]);
 
@@ -86,6 +86,15 @@ const Players: React.FC = ({ navigation }: any) => {
       };
     }, []),
   );
+
+  const resetAllDataForList = () => {
+    setPlayers([]);
+    setTotalPlayers(0);
+    setPage({
+      skip: 0,
+      limit: 20,
+    });
+  };
 
   const getSearchResult = () => {
     playerService
@@ -345,7 +354,7 @@ const Players: React.FC = ({ navigation }: any) => {
             />
           )}
           onEndReached={_handleLoadMore}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={2}
           initialNumToRender={20}
           ListFooterComponent={_renderFooter}
           removeClippedSubviews={true}

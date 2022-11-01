@@ -155,7 +155,7 @@ const LeaderBoard: React.FC = ({ navigation }: any) => {
                         alignContent: 'flex-end',
                       }}
                     >
-                      {leader.coins}
+                      {(leader.coins || 0).toFixed(2)}
                     </Text>
                     <Image source={coins} />
                   </View>
