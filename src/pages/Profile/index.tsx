@@ -28,6 +28,7 @@ import {
 } from './styles';
 
 import { User } from '../../models/user.interface';
+import { Player } from '../../models/player.interface';
 import ProfileContext from '../../context/ProfileContext';
 
 import UserService from '../../services/user.service';
@@ -284,14 +285,20 @@ const Profile: React.FC = ({ navigation, route }: any) => {
     );
   };
 
-  const clickEventForLeader = player => {
-    setButtonClicked(true);
-    if (!buttonClicked) {
-      navigation.navigate('Investment', {
-        userId: player.id,
-        player,
-      });
-      setTimeout(() => setButtonClicked(false), 500);
+  const clickEventForLeader = (player: Player) => {
+    if (player.isEnable) {
+      setButtonClicked(true);
+      if (!buttonClicked) {
+        navigation.navigate('Investment', {
+          userId: player.id,
+          player,
+        });
+        setTimeout(() => setButtonClicked(false), 500);
+      }
+    } else {
+      utilService.showMessage(
+        'Cannot buy share as the match is about to start',
+      );
     }
   };
 

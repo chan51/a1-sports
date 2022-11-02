@@ -125,17 +125,15 @@ const Investment: React.FC = ({ navigation, route }: any) => {
         ...data,
         coins: currentUser?.coins - data.totalInvestment,
       })
-      .then(({ status, data }: any) => {
+      .then(({ status, data, message }: any) => {
         if (status) {
-          handleSubmitInvestment(data);
+          handleSubmitInvestment(
+            data,
+            `Successfully invested in player ${playerDetails?.name}!`,
+          );
+        } else {
+          utilService.showMessage(message);
         }
-      })
-      .finally(() => {
-        utilService.showMessage(
-          `Successfully invested in player ${playerDetails?.name}!`,
-        );
-        isOnProfile.next(true);
-        goBack();
       });
   };
 
@@ -155,21 +153,20 @@ const Investment: React.FC = ({ navigation, route }: any) => {
         ...data,
         coins: currentUser?.coins + investment * playerDetails.value,
       })
-      .then(({ status, data }: any) => {
+      .then(({ status, data, message }: any) => {
         if (status) {
-          handleSubmitInvestment(data);
+          handleSubmitInvestment(
+            data,
+            `Successfully sold investment of player ${playerDetails?.name}!`,
+          );
+        } else {
+          utilService.showMessage(message);
         }
-      })
-      .finally(() => {
-        utilService.showMessage(
-          `Successfully sold investment of player ${playerDetails?.name}!`,
-        );
-        isOnProfile.next(true);
-        goBack();
       });
   };
 
-  const handleSubmitInvestment = data => {
+  const handleSubmitInvestment = (data, meesage) => {
+    utilService.showMessage(meesage);
     const updatedUser = {
       ...currentUser,
       coins: data.coins,
@@ -179,6 +176,8 @@ const Investment: React.FC = ({ navigation, route }: any) => {
     setCurrentUserCoins(null);
     setInvestment(null);
     setMaxInvestment(Math.floor(updatedUser.coins / player.value));
+    isOnProfile.next(true);
+    goBack();
   };
 
   return (

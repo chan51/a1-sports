@@ -5,4 +5,6 @@ export interface Player extends BaseEntity {
   type: string[];
   team: string;
   value: number;
+  isDeleted?: boolean;
+  isEnable?: boolean;
 }

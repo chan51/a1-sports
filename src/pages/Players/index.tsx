@@ -131,19 +131,25 @@ const Players: React.FC = ({ navigation }: any) => {
   };
 
   const gotoPlayerInvestment = (player: Player) => {
-    setButtonClicked(true);
-    if (!buttonClicked) {
-      const data = {
-        redirectId: player.id,
-        description: player.name,
-        searchType: 'player',
-      };
-      playerService.createRecentSearch(data);
-      navigation.navigate('Investment', {
-        userId: player.id,
-        player,
-      });
-      setTimeout(() => setButtonClicked(false), 500);
+    if (player.isEnable) {
+      setButtonClicked(true);
+      if (!buttonClicked) {
+        const data = {
+          redirectId: player.id,
+          description: player.name,
+          searchType: 'player',
+        };
+        playerService.createRecentSearch(data);
+        navigation.navigate('Investment', {
+          userId: player.id,
+          player,
+        });
+        setTimeout(() => setButtonClicked(false), 500);
+      }
+    } else {
+      utilService.showMessage(
+        'Cannot buy share as the match is about to start',
+      );
     }
   };
 
