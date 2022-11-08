@@ -142,7 +142,7 @@ const utilService = {
       }
       token = (
         await Notifications.getExpoPushTokenAsync({
-          experienceId: '@chan51/a1-sports-app',
+          experienceId: '@chan51/a1-sports-exchange-app',
         })
       ).data;
     } else {

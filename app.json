@@ -1,11 +1,14 @@
 {
   "expo": {
     "name": "A1 Sports Exchange",
-    "slug": "a1-sports-app",
+    "slug": "a1-sports-exchange-app",
     "privacy": "hidden",
-    "version": "1.0.2",
-    "scheme": "a1sports",
-    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "scheme": "a1sports-exchange",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -22,18 +25,27 @@
       "fallbackToCacheTimeout": 0,
       "enabled": false
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "packagerOpts": {
-      "sourceExts": ["js", "ts", "tsx", "jsx"]
+      "sourceExts": [
+        "js",
+        "ts",
+        "tsx",
+        "jsx"
+      ]
     },
     "notification": {
       "color": "#F5AF19",
       "icon": "./assets/images/notification-icon.png"
     },
     "android": {
-      "package": "com.a1sports.android",
-      "versionCode": 3,
-      "permissions": ["INTERNET"],
+      "package": "com.a1sports.exchange.android",
+      "versionCode": 1,
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
         "backgroundImage": "./assets/images/notification-icon.png",
         "backgroundColor": "#F5AF19"
@@ -42,12 +54,15 @@
       "googleServicesFile": "./google-services.json"
     },
     "ios": {
-      "bundleIdentifier": "com.a1sports.ios",
+      "bundleIdentifier": "com.a1sports.exchange.ios",
       "buildNumber": "1.0.0",
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "web": {
@@ -55,7 +70,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "73e45114-6125-41a7-a566-337ed0031967"
+        "projectId": "8748479b-5652-4b13-852a-0260366632cc"
       }
     }
   }

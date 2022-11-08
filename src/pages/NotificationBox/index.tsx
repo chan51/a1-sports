@@ -9,7 +9,7 @@ const NotificationBox: React.FC = ({ navigation }: any) => {
       </View>
 
       <View style={styles.scrollView}>
-        <Text>A1 Sports</Text>
+        <Text>A1 Sports Exchange</Text>
         <View>
           <Text>{'\n'}</Text>
         </View>

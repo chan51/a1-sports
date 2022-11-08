@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>407541199427-4ndikdogjqoo7n0a1cdehg7njvocdd07.apps.googleusercontent.com</string>
+	<string>399142898520-fboautq445olf9upsocbvf3edhu7grib.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.407541199427-4ndikdogjqoo7n0a1cdehg7njvocdd07</string>
+	<string>com.googleusercontent.apps.399142898520-fboautq445olf9upsocbvf3edhu7grib</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDiF8LqPGWvBIcM-ny-WBPwD-PCLQaSzVU</string>
+	<string>AIzaSyA3Jq0ZbijB6_Y_ZcGNhQYFGJEDal4lXoQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>407541199427</string>
+	<string>399142898520</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.a1sports.ios</string>
+	<string>com.a1sports.exchange.ios</string>
 	<key>PROJECT_ID</key>
-	<string>a1sports</string>
+	<string>a1-sports-exchange</string>
 	<key>STORAGE_BUCKET</key>
-	<string>a1sports.appspot.com</string>
+	<string>a1-sports-exchange.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:407541199427:ios:0c16bb3cc3565e87e95af6</string>
+	<string>1:399142898520:ios:96d0ef677e0e7477b8b32d</string>
 </dict>
 </plist>

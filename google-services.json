@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "407541199427",
-    "project_id": "a1sports",
-    "storage_bucket": "a1sports.appspot.com"
+    "project_number": "399142898520",
+    "project_id": "a1-sports-exchange",
+    "storage_bucket": "a1-sports-exchange.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:407541199427:android:a981f7a4c4bafb89e95af6",
+        "mobilesdk_app_id": "1:399142898520:android:15b78de249035761b8b32d",
         "android_client_info": {
-          "package_name": "com.a1sports.android"
+          "package_name": "com.a1sports.exchange.android"
         }
       },
       "oauth_client": [
         {
-          "client_id": "407541199427-f3fleiuvdg4etnplfmm86031coufgifj.apps.googleusercontent.com",
+          "client_id": "399142898520-mau78ag9d5dhnu3vadquoat6k0b0v807.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyApxUCWovyAdiO5CgbuFfgcTxD8Gp2JjVA"
+          "current_key": "AIzaSyBUJxqQIJ8QJ6M4yTp6C3saiaESaqz1P5o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "407541199427-f3fleiuvdg4etnplfmm86031coufgifj.apps.googleusercontent.com",
+              "client_id": "399142898520-mau78ag9d5dhnu3vadquoat6k0b0v807.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

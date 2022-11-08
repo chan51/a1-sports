@@ -1,7 +1,8 @@
-# a1-sports
+# a1-sports-exchange
 
 Start project - npm start
-Build project Android - eas build -p android
+Dev Build project Android - npm run build-dev-android
+Prod Build project Android - npm run build-prod-android
 Build project Ios - expo build:ios
 
 npm run build-android
@@ -16,10 +17,10 @@ app.json
 {
   "expo": {
     "name": "A1 Sports Exchange",
-    "slug": "a1-sports-app",
+    "slug": "a1-sports-exchange-app",
     "privacy": "hidden",
     "version": "1.0.1",
-    "scheme": "a1sports",
+    "scheme": "a1sports-exchange",
     "platforms": ["ios", "android"],
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -46,7 +47,7 @@ app.json
       "icon": "./assets/images/notification-icon.png"
     },
     "android": {
-      "package": "com.a1sports.android",
+      "package": "com.a1sports.exchange.android",
       "versionCode": 2,
       "permissions": ["INTERNET"],
       "adaptiveIcon": {
@@ -61,12 +62,12 @@ app.json
           "data": [
             {
               "scheme": "http",
-              "host": "*.a1sports.com",
+              "host": "*.a1sports.exchange.com",
               "pathPrefix": "/app"
             },
             {
               "scheme": "https",
-              "host": "*.a1sports.com",
+              "host": "*.a1sports.exchange.com",
               "pathPrefix": "/app"
             }
           ],
@@ -75,7 +76,7 @@ app.json
       ]
     },
     "ios": {
-      "bundleIdentifier": "com.a1sports.ios",
+      "bundleIdentifier": "com.a1sports.exchange.ios",
       "buildNumber": "1.0.0",
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
