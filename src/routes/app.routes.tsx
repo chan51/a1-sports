@@ -77,6 +77,9 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
         setTimeout(() => setIsTabClicked(false), 500);
       };
       userService.isUserLogin(loggedInCallback, params, tabClicked);
+      setTimeout(() => {
+        utilService.isOnProfileTab(path === 'Profile');
+      }, 1000);
     }
   };
 
@@ -136,10 +139,7 @@ const AppRoutes: React.FC = ({ navigation, route }: any) => {
         name="Profile"
         component={Profile}
         listeners={{
-          focus: () => utilService.isOnProfileTab(true),
-          blur: () => utilService.isOnProfileTab(false),
-          tabPress: $event =>
-            navigateToTab($event, 'Profile', { userId: '', refreshTab: true }),
+          tabPress: $event => navigateToTab($event, 'Profile', { userId: '' }),
         }}
         initialParams={initialParams}
         options={{

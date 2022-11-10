@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import { distinctUntilChanged, take } from 'rxjs';
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
@@ -84,14 +85,23 @@ const Profile: React.FC = ({ navigation, route }: any) => {
 
   useEffect(() => {
     if (isMounted) {
-      isOnProfile.subscribe(status => {
-        if (status) {
-          _handleRefresh();
-          utilService.isOnProfileTab(false);
-        }
-      });
+      try {
+        isOnProfile &&
+          isOnProfile &&
+          isOnProfile
+            .pipe(distinctUntilChanged(), take(1))
+            .subscribe(status => {
+              if (!status) return;
+              if (status) {
+                _handleRefresh();
+                setTimeout(() => {
+                  utilService.isOnProfileTab(false);
+                }, 0);
+              }
+            });
+      } catch {}
     }
-  }, []);
+  }, [isMounted]);
 
   useFocusEffect(
     React.useCallback(() => {

@@ -40,6 +40,7 @@ const ProfilePicUpload: React.FC<ProfilePicUploadProps> = ({
   }, [user]);
 
   const onPicUpload = () => {
+    return;
     if (!user.id || userId === user?.id) {
       navigation.navigate('Photo', {
         profilePicUpload: true,
@@ -109,14 +110,14 @@ const ProfilePicUpload: React.FC<ProfilePicUploadProps> = ({
       ) : (
         <>
           <CoverImage source={userIcon} />
-          <ActionButton>
+          {/* <ActionButton>
             <MaterialCommunityIcons
               style={{ elevation: 5 }}
               name="camera-outline"
               size={30}
               color="#4793f8"
             />
-          </ActionButton>
+          </ActionButton> */}
         </>
       )}
       {/* <BottomVector></BottomVector> */}

@@ -50,6 +50,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
   const [isMounted, setIsMounted] = useState(false);
   const [investment, setInvestment] = useState(null);
   const [maxInvestment, setMaxInvestment] = useState(null);
+  const [isButtonClicked, setIsButtonClicked] = React.useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -108,7 +109,18 @@ const Investment: React.FC = ({ navigation, route }: any) => {
     );
   };
 
+  const shouldInvest = () => {
+    switch (isButtonClicked) {
+      case true:
+        return;
+      case false:
+        setIsButtonClicked(true);
+        break;
+    }
+  };
+
   const buyInvestment = () => {
+    shouldInvest();
     Keyboard.dismiss();
     const data = {
       isBuy: true,
@@ -138,15 +150,12 @@ const Investment: React.FC = ({ navigation, route }: any) => {
   };
 
   const sellInvestment = () => {
+    shouldInvest();
     Keyboard.dismiss();
     const data = {
       ...playerLastInvestment,
       fromSell: true,
-      investment: playerLastInvestment.investment - investment,
-      totalInvestment:
-        playerLastInvestment.totalInvestment -
-        investment * playerLastInvestment.playerValue,
-      isSell: investment === playerLastInvestment.investment,
+      investment,
     };
     userService
       .submitInvestment({
@@ -167,6 +176,7 @@ const Investment: React.FC = ({ navigation, route }: any) => {
 
   const handleSubmitInvestment = (data, meesage) => {
     utilService.showMessage(meesage);
+    isOnProfile.next(true);
     const updatedUser = {
       ...currentUser,
       coins: data.coins,
@@ -176,7 +186,6 @@ const Investment: React.FC = ({ navigation, route }: any) => {
     setCurrentUserCoins(null);
     setInvestment(null);
     setMaxInvestment(Math.floor(updatedUser.coins / player.value));
-    isOnProfile.next(true);
     goBack();
   };
 
@@ -319,7 +328,10 @@ const Investment: React.FC = ({ navigation, route }: any) => {
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={() =>
-                investment && investment <= playerLastInvestment.investment
+                investment &&
+                investment <=
+                  playerLastInvestment.investment -
+                    (playerLastInvestment.soldInvestment || 0)
                   ? sellInvestment()
                   : null
               }
@@ -328,7 +340,10 @@ const Investment: React.FC = ({ navigation, route }: any) => {
                 style={{
                   ...styles.button,
                   backgroundColor:
-                    investment && investment <= playerLastInvestment.investment
+                    investment &&
+                    investment <=
+                      playerLastInvestment.investment -
+                        (playerLastInvestment.soldInvestment || 0)
                       ? '#fae04b'
                       : '#d5dbe5',
                 }}
