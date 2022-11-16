@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { API_BASE } from '../const/api-urls.const';
 import * as NavigationService from './navigation.service';
+import { utilService } from './util.service';
 
 const APIService = axios.create({
   baseURL: `${API_BASE.baseURL}/`,
@@ -26,6 +27,10 @@ APIService.interceptors.response.use(
     if (error.response) {
       const statusCode = +error.response.status;
       if (statusCode === 401) {
+        utilService.showMessage(
+          'User seesion expired or invalid session!!!',
+          5000,
+        );
         logout();
       } else if (error.response.data) {
         return error.response.data;

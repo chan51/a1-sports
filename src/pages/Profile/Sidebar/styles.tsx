@@ -22,7 +22,6 @@ export const Menu = styled.View`
 export const MenuHeader = styled.View`
   border-bottom-width: 1px;
   border-bottom-color: #fff;
-  height: 44px;
   justify-content: center;
   align-items: flex-start;
   padding: 0 15px;

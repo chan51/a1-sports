@@ -140,7 +140,8 @@ const OTP: React.FC = ({ navigation, route }: any) => {
     } else {
       setOtpCheck(false);
       utilService.showMessage(
-        'OTP is not valid, try to resend or try after some time!',
+        result.status ||
+          'OTP is not valid, try to resend or try after some time!',
       );
     }
   };

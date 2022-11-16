@@ -27,6 +27,7 @@ import {
   ProfileDetailsData,
   ListItem,
 } from './styles';
+import coins from './../../assets/icons/coins.png';
 
 import { User } from '../../models/user.interface';
 import { Player } from '../../models/player.interface';
@@ -38,7 +39,6 @@ import { utilService, isOnProfile } from '../../services/util.service';
 import Sidebar from './Sidebar';
 import ProfilePicUpload from '../../components/ProfilePicUpload';
 import ProgressiveImage from '../../components/ProgressiveImage/ProgressiveImage';
-import coins from './../../assets/icons/coins.png';
 
 const userService = new UserService();
 const { width: winWidth } = Dimensions.get('window');
@@ -312,6 +312,23 @@ const Profile: React.FC = ({ navigation, route }: any) => {
     }
   };
 
+  const returnPlayerRole = role => {
+    if (!role) return '';
+    role = (role || '').toLowerCase();
+    switch (role) {
+      case 'batter':
+        return require(`./../../assets/cricket/cricket-batter.png`);
+      case 'bowler':
+        return require(`./../../assets/cricket/cricket-bowler.png`);
+      case 'all-rounder':
+        return require(`./../../assets/cricket/cricket-all-rounder.png`);
+      case 'wicket-keeper':
+        return require(`./../../assets/cricket/cricket-wicket-keeper.png`);
+      default:
+        return require(`./../../assets/cricket/cricket-all-rounder.png`);
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -383,12 +400,20 @@ const Profile: React.FC = ({ navigation, route }: any) => {
             {(investments || []).length ? (
               <View style={styles.playerHeading}>
                 <Text
-                  style={{ ...styles.playerListHeadingText, marginLeft: -10 }}
+                  style={{
+                    ...styles.playerListHeadingText,
+                    marginLeft: -10,
+                    width: '33%',
+                  }}
                 >
                   Player
                 </Text>
                 <Text
-                  style={{ ...styles.playerListHeadingText, marginLeft: 2 }}
+                  style={{
+                    ...styles.playerListHeadingText,
+                    marginLeft: 2,
+                    width: '17%',
+                  }}
                 >
                   Share
                 </Text>
@@ -398,7 +423,7 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                   Value
                 </Text>
                 <Text
-                  style={{ ...styles.playerListHeadingText, marginLeft: 0 }}
+                  style={{ ...styles.playerListHeadingText, marginLeft: -10 }}
                 >
                   Coins
                 </Text>
@@ -424,15 +449,30 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                   >
                     <View style={styles.playerList}>
                       <View
-                        style={{ ...styles.playerListValue, paddingLeft: 5 }}
+                        style={{
+                          ...styles.playerListValue,
+                          paddingLeft: 5,
+                          width: '33%',
+                          flexWrap: 'wrap',
+                        }}
                       >
                         <Text style={styles.playerListValueText}>
+                          <Image
+                            source={returnPlayerRole(investment?.player?.role)}
+                            fadeDuration={0}
+                            style={{ width: 12, height: 12 }}
+                          />
+                          {'  '}
                           {investment?.playerName}
                           {'\n'}({investment?.player?.team})
                         </Text>
                       </View>
                       <View
-                        style={{ ...styles.playerListValue, paddingLeft: 12 }}
+                        style={{
+                          ...styles.playerListValue,
+                          paddingLeft: 17,
+                          width: '17%',
+                        }}
                       >
                         <Text style={styles.playerListValueText}>
                           {investment.investment}

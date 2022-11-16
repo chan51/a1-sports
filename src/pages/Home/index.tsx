@@ -207,6 +207,23 @@ const Home: React.FC = ({ navigation, route }: any) => {
     }
   };
 
+  const returnPlayerRole = role => {
+    if (!role) return '';
+    role = (role || '').toLowerCase();
+    switch (role) {
+      case 'batter':
+        return require(`./../../assets/cricket/cricket-batter.png`);
+      case 'bowler':
+        return require(`./../../assets/cricket/cricket-bowler.png`);
+      case 'all-rounder':
+        return require(`./../../assets/cricket/cricket-all-rounder.png`);
+      case 'wicket-keeper':
+        return require(`./../../assets/cricket/cricket-wicket-keeper.png`);
+      default:
+        return require(`./../../assets/cricket/cricket-all-rounder.png`);
+    }
+  };
+
   return (
     <Container>
       {isMounted && (
@@ -267,6 +284,16 @@ const Home: React.FC = ({ navigation, route }: any) => {
                     <ListItem onPress={() => gotoPlayerInvestment(player)}>
                       <View style={styles.playerList}>
                         <View style={styles.playerListValue}>
+                          <Image
+                            source={returnPlayerRole(player?.role)}
+                            fadeDuration={0}
+                            style={{
+                              width: 12,
+                              height: 12,
+                              marginTop: 5,
+                              marginRight: 4,
+                            }}
+                          />
                           <Text style={styles.playerListValueText}>
                             {player.name}
                           </Text>

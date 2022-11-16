@@ -189,6 +189,23 @@ const Investment: React.FC = ({ navigation, route }: any) => {
     goBack();
   };
 
+  const returnPlayerRole = role => {
+    if (!role) return '';
+    role = (role || '').toLowerCase();
+    switch (role) {
+      case 'batter':
+        return require(`./../../assets/cricket/cricket-batter.png`);
+      case 'bowler':
+        return require(`./../../assets/cricket/cricket-bowler.png`);
+      case 'all-rounder':
+        return require(`./../../assets/cricket/cricket-all-rounder.png`);
+      case 'wicket-keeper':
+        return require(`./../../assets/cricket/cricket-wicket-keeper.png`);
+      default:
+        return require(`./../../assets/cricket/cricket-all-rounder.png`);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header>
@@ -209,9 +226,16 @@ const Investment: React.FC = ({ navigation, route }: any) => {
             <CoverImage source={avatar} />
           </Banner>
           <ProfileDetailsData>
-            <Text style={{ fontSize: 15, fontWeight: '500' }}>
-              {playerDetails?.name}
-            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Image
+                source={returnPlayerRole(player?.role)}
+                fadeDuration={0}
+                style={{ width: 12, height: 12, marginTop: 5, marginRight: 4 }}
+              />
+              <Text style={{ fontSize: 15, fontWeight: '500' }}>
+                {playerDetails?.name}
+              </Text>
+            </View>
             <Text style={{ fontSize: 15, fontWeight: '500' }}>
               {playerDetails?.team}
             </Text>
