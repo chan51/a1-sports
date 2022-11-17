@@ -16,7 +16,7 @@ Get Android Keystore Details - keytool -list -v -keystore ./c4cook-mobile-app.jk
 app.json
 {
   "expo": {
-    "name": "A1 Sports Exchange",
+    "name": "A1 Sports",
     "slug": "a1-sports-exchange-app",
     "privacy": "hidden",
     "version": "1.0.1",

@@ -13,14 +13,14 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 const data = [
   {
     index: 0,
-    title: 'A1 Sports Exchange',
+    title: 'A1 Sports',
     text: 'Sports ka share market',
     image: require('../../assets/images/slider1.png'),
     bg: '#ffffff',
   },
   {
     index: 1,
-    title: 'A1 Sports Exchange',
+    title: 'A1 Sports',
     text: 'Invest into your favorite sports\n\n person to earn BIG rewards',
     image: require('../../assets/images/slider2.png'),
     bg: '#ffffff',

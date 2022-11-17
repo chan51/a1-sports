@@ -357,11 +357,11 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                   <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Ionicons name="ios-arrow-back" size={22} color="black" />
                   </TouchableOpacity>
-                  <HeadingLeftTitle>A1 sports Exchange</HeadingLeftTitle>
+                  <HeadingLeftTitle>A1 Sports</HeadingLeftTitle>
                 </HeadingLeft>
               ) : (
                 <HeadingRight>
-                  <HeadingLeftTitle>A1 sports Exchange</HeadingLeftTitle>
+                  <HeadingLeftTitle>A1 Sports</HeadingLeftTitle>
                   <TouchableOpacity onPress={() => toggleSidebar()}>
                     <Octicons name="three-bars" size={22} color="black" />
                   </TouchableOpacity>
