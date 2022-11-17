@@ -15,19 +15,21 @@ import * as Linking from 'expo-linking';
 import * as SecureStore from 'expo-secure-store';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { useFocusEffect } from '@react-navigation/native';
-import { Entypo } from '@expo/vector-icons';
 
-import { Container, ListItem, UserImage } from './styles';
+import { Player } from '../../models/player.interface';
 import PlayerService from '../../services/player.service';
 import { isOnHome, utilService, updateHome } from '../../services/util.service';
 
+import { Container, ListItem, UserImage } from './styles';
 import playerIcon from './../../assets/player/player1.png';
-import koo from './../../assets/icons/koo.png';
 import growth from './../../assets/icons/growth.png';
 import down from './../../assets/icons/down.png';
 import coins from './../../assets/icons/coins.png';
 import arrowRight from './../../assets/icons/arrow-right.png';
-import { Player } from '../../models/player.interface';
+import koo from './../../assets/social/koo.png';
+import facebook from './../../assets/social/facebook.png';
+import twitter from './../../assets/social/twitter.png';
+import instagram from './../../assets/social/instagram.png';
 
 const wait = (timeout: any) => {
   return new Promise(resolve => {
@@ -363,41 +365,26 @@ const Home: React.FC = ({ navigation, route }: any) => {
           style={styles.socialIconListItem}
           onPress={() => handlePressingSocialIcon('facebook')}
         >
-          <Entypo
-            name="facebook"
-            style={styles.socialIconListItemImage}
-            size={35}
-          />
+          <Image source={facebook} style={styles.socialIconListItemImage} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.socialIconListItem}
           onPress={() => handlePressingSocialIcon('twitter')}
         >
-          <Entypo
-            name="twitter"
-            style={styles.socialIconListItemImage}
-            size={35}
-          />
+          <Image source={twitter} style={styles.socialIconListItemImage} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.socialIconListItem}
           onPress={() => handlePressingSocialIcon('instagram')}
         >
-          <Entypo
-            name="instagram"
-            style={styles.socialIconListItemImage}
-            size={35}
-          />
+          <Image source={instagram} style={styles.socialIconListItemImage} />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.socialIconListItem}
           onPress={() => handlePressingSocialIcon('koo')}
         >
-          <Image
-            source={koo}
-            style={{ ...styles.socialIconListItemImage, width: 35, height: 35 }}
-          />
+          <Image source={koo} style={styles.socialIconListItemImage} />
         </TouchableOpacity>
       </View>
     </Container>
@@ -503,6 +490,8 @@ const styles = StyleSheet.create({
   socialIconListItemImage: {
     top: 7,
     left: 2,
+    width: 35,
+    height: 35,
   },
 });
 
