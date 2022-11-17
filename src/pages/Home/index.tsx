@@ -9,18 +9,20 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 
+import * as Linking from 'expo-linking';
 import * as SecureStore from 'expo-secure-store';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { useFocusEffect } from '@react-navigation/native';
+import { Entypo } from '@expo/vector-icons';
 
-import { Container, ListItem } from './styles';
+import { Container, ListItem, UserImage } from './styles';
 import PlayerService from '../../services/player.service';
 import { isOnHome, utilService, updateHome } from '../../services/util.service';
 
 import playerIcon from './../../assets/player/player1.png';
+import koo from './../../assets/icons/koo.png';
 import growth from './../../assets/icons/growth.png';
 import down from './../../assets/icons/down.png';
 import coins from './../../assets/icons/coins.png';
@@ -35,11 +37,6 @@ const wait = (timeout: any) => {
 
 let canExitApp = 0;
 const perPage = 10;
-let feedListParam = {
-  skip: 0,
-  limit: perPage,
-  total: 0,
-};
 const playerService = new PlayerService();
 
 const Home: React.FC = ({ navigation, route }: any) => {
@@ -145,11 +142,6 @@ const Home: React.FC = ({ navigation, route }: any) => {
 
   const resetDataOnLeave = () => {
     if (isMounted) {
-      feedListParam = {
-        skip: 0,
-        limit: perPage,
-        total: 0,
-      };
       setRefreshing(false);
       setIsContentLoading(false);
       setIsMounted(false);
@@ -221,6 +213,31 @@ const Home: React.FC = ({ navigation, route }: any) => {
         return require(`./../../assets/cricket/cricket-wicket-keeper.png`);
       default:
         return require(`./../../assets/cricket/cricket-all-rounder.png`);
+    }
+  };
+
+  const handlePressingSocialIcon = type => {
+    switch (type) {
+      case 'facebook':
+        Linking.openURL(
+          'https://www.facebook.com/profile.php?id=100087275494022',
+        );
+        break;
+      case 'twitter':
+        Linking.openURL(
+          'https://twitter.com/A1Sportsx?t=DSslcrbVF_blUw3QZZJJ9g&s=09',
+        );
+        break;
+      case 'instagram':
+        Linking.openURL(
+          'https://instagram.com/a1sports.exchange?igshid=YmMyMTA2M2Y=',
+        );
+        break;
+      case 'koo':
+        Linking.openURL(
+          'https://www.kooapp.com/profile/%61%31%73%70%6F%72%74%73',
+        );
+        break;
     }
   };
 
@@ -341,6 +358,48 @@ const Home: React.FC = ({ navigation, route }: any) => {
           </ScrollView>
         </SafeAreaView>
       )}
+      <View style={styles.socialIconList}>
+        <TouchableOpacity
+          style={styles.socialIconListItem}
+          onPress={() => handlePressingSocialIcon('facebook')}
+        >
+          <Entypo
+            name="facebook"
+            style={styles.socialIconListItemImage}
+            size={35}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.socialIconListItem}
+          onPress={() => handlePressingSocialIcon('twitter')}
+        >
+          <Entypo
+            name="twitter"
+            style={styles.socialIconListItemImage}
+            size={35}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.socialIconListItem}
+          onPress={() => handlePressingSocialIcon('instagram')}
+        >
+          <Entypo
+            name="instagram"
+            style={styles.socialIconListItemImage}
+            size={35}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.socialIconListItem}
+          onPress={() => handlePressingSocialIcon('koo')}
+        >
+          <Image
+            source={koo}
+            style={{ ...styles.socialIconListItemImage, width: 35, height: 35 }}
+          />
+        </TouchableOpacity>
+      </View>
     </Container>
   );
 };
@@ -421,6 +480,29 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 27,
     paddingVertical: 0,
+  },
+  socialIconList: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+  },
+  socialIconListItem: {
+    width: 55,
+    height: 55,
+    borderRadius: 55,
+    shadowColor: '#000',
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    borderColor: '#3a8afc',
+    borderWidth: 3,
+    paddingHorizontal: 5,
+    marginHorizontal: 5,
+  },
+  socialIconListItemImage: {
+    top: 7,
+    left: 2,
   },
 });
 

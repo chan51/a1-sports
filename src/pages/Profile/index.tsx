@@ -475,7 +475,8 @@ const Profile: React.FC = ({ navigation, route }: any) => {
                         }}
                       >
                         <Text style={styles.playerListValueText}>
-                          {investment.investment}
+                          {investment.investment -
+                            (investment.soldInvestment || 0)}
                         </Text>
                       </View>
                       <View

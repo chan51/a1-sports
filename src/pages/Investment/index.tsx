@@ -17,10 +17,10 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { Player } from '../../models/player.interface';
 
-import avatar from './../../assets/player/avatar.png';
+import down from './../../assets/icons/down.png';
 import growth from './../../assets/icons/growth.png';
 import coins from './../../assets/icons/coins.png';
-import down from './../../assets/icons/down.png';
+import avatar from './../../assets/player/avatar.png';
 import {
   Header,
   ProfileDetails,
@@ -283,6 +283,20 @@ const Investment: React.FC = ({ navigation, route }: any) => {
             <Image source={coins} />
           </View>
         </View>
+        <View style={styles.playerList}>
+          <View style={styles.playerListTitel}>
+            <Text style={{ fontSize: 13, fontWeight: '400' }}>
+              Available Shares to Sell
+            </Text>
+          </View>
+          <View style={styles.playerListValue}>
+            <Text style={{ marginRight: 8, fontSize: 13, fontWeight: '400' }}>
+              {playerLastInvestment?.investment -
+                (playerLastInvestment?.soldInvestment || 0)}
+            </Text>
+          </View>
+        </View>
+
         <View style={styles.playerList}>
           <View style={styles.playerListTitel}>
             <Text style={{ fontSize: 16, fontWeight: '500' }}>Invest</Text>
